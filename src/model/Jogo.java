@@ -121,7 +121,7 @@ public class Jogo implements Runnable
             e.mover(0, qtdMovimento);
             
             if (checarColisao(e)){
-                this.ocorreuColisao = true;
+                ocorreuColisao = true;
             }
             else
             {
@@ -156,12 +156,12 @@ public class Jogo implements Runnable
     {
         if (!estado.isIniciado())
         {
-            this.estado.setIniciado(true);
-            this.estado.setPontuacao(0);
-            this.estado.setRecordAtual(10);
+            estado.setIniciado(true);
+            estado.setPontuacao(0);
+            estado.setRecordAtual(10);
             
             // Quando a classe record estiver pronta.
-            // this.estado.setRecordAtual(new Record().getRecord());
+            // estado.setRecordAtual(new Record().getRecord());
             
             new Thread(this).start();
         }
@@ -189,7 +189,7 @@ public class Jogo implements Runnable
             if (ocorreuColisao && !estado.isGameOver())
             {
                 incrementarPontuacao();
-                this.ocorreuColisao = false;
+                ocorreuColisao = false;
             }
             
             // Dorme o thread pelo tempo apropriado
