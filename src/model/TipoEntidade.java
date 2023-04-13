@@ -20,4 +20,12 @@ public enum TipoEntidade
     {
         this.id = id;
     }
+    
+    public TipoEntidade getEntidadeCorrespondente()
+    {
+        if(this.id < 4)
+            return TipoEntidade.values()[id+4];
+        
+        return TipoEntidade.values()[id-4];
+    }
 }

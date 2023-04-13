@@ -96,6 +96,14 @@ public class Estado
     public void setGameOver(boolean gameOver)
     {
         this.gameOver = gameOver;
+        
+        if (gameOver)
+        {
+            for (EstadoObserver obs : observadores)
+            {
+                obs.noGameOver();
+            }
+        }
     }
     
     public boolean isGameOver()
@@ -117,6 +125,11 @@ public class Estado
         }
     }
 
+    public Entidade getLixeira(int index)
+    {
+        return (Entidade) lixeiras.get(index);
+    }
+    
     public List<Desenhavel> getLixeiras()
     {
         return lixeiras;

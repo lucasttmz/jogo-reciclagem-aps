@@ -114,7 +114,7 @@ public class Jogo implements Runnable
     {
         List<Desenhavel> novosReciclados = new ArrayList<>();
         
-        // Move cada um dos lixos.
+        // Move cada um dos lixos (esquerda pra direita).
         for (Desenhavel reciclavel : estado.getReciclaveis())
         {
             Entidade e = (Entidade) reciclavel;
@@ -134,10 +134,20 @@ public class Jogo implements Runnable
     
     private boolean checarColisao(Entidade lixo)
     {
-        if (lixo.getY() < TAMANHO_JANELA)
+        // Não houve colisão entre lixeira e lixo
+        if(lixo.getY() < TAMANHO_JANELA)
             return false;
         
-        // TODO Logica da colisao
+        // Index calculado diretamente com as coordenadas fixas das lixeiras
+        final int INDEX = lixo.getX() / 101;
+        Entidade lixeira = estado.getLixeira(INDEX);
+        
+        // Compara lixo com a lixeira correspondente
+        if (lixo.getTipo().getEntidadeCorrespondente() != lixeira.getTipo())
+        {
+            if(!estado.isGameOver())
+                estado.setGameOver(true);
+        }
         
         return true;
     }

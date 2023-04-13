@@ -34,12 +34,14 @@ public class Entidade implements Desenhavel
     
     
     private final ImageIcon imagem;
+    private final TipoEntidade tipo;
     private int x;
     private int y;
     
-    private Entidade(ImageIcon imagem, int x, int y)
+    private Entidade(TipoEntidade tipo, int x, int y)
     {
-        this.imagem = imagem;
+        this.imagem = imgsEntidades.get(tipo);
+        this.tipo = tipo;
         this.x = x;
         this.y = y;
     }
@@ -67,7 +69,7 @@ public class Entidade implements Desenhavel
         // Cria os n reciclaveis e os adiciona a lista a ser retornada.
         for (int i = 0; i < qtd; i++)
         {
-            Entidade entidade = new Entidade(imgsEntidades.get(tipos.get(i)),
+            Entidade entidade = new Entidade(tipos.get(i),
                     posPossiveis.get(i), 0);
             reciclaveis.add(entidade);
         }
@@ -79,12 +81,17 @@ public class Entidade implements Desenhavel
     {
         List<Desenhavel> lixeiras = new ArrayList<>();
         
-        lixeiras.add(new Entidade(imgsEntidades.get(TipoEntidade.LIXEIRA_METAL), 1, 0));
-        lixeiras.add(new Entidade(imgsEntidades.get(TipoEntidade.LIXEIRA_PLASTICO), 101, 0));
-        lixeiras.add(new Entidade(imgsEntidades.get(TipoEntidade.LIXEIRA_PAPEL), 201, 0));
-        lixeiras.add(new Entidade(imgsEntidades.get(TipoEntidade.LIXEIRA_VIDRO), 301, 0));
+        lixeiras.add(new Entidade(TipoEntidade.LIXEIRA_METAL, 1, 0));
+        lixeiras.add(new Entidade(TipoEntidade.LIXEIRA_PLASTICO, 101, 0));
+        lixeiras.add(new Entidade(TipoEntidade.LIXEIRA_PAPEL, 201, 0));
+        lixeiras.add(new Entidade(TipoEntidade.LIXEIRA_VIDRO, 301, 0));
         
         return lixeiras;
+    }
+    
+    public TipoEntidade getTipo()
+    {
+        return tipo;
     }
     
     @Override
