@@ -16,21 +16,21 @@ public class Entidade implements Desenhavel
     // Instância única de cada imagem mapeada ao ID da entidade.
     private static final Map<TipoEntidade, ImageIcon> imgsEntidades = Map.of(
             TipoEntidade.LIXO_PAPEL, new ImageIcon(
-                    Entidade.class.getResource("/imagens/lixo-papel.png")), 
+                    Entidade.class.getResource("/resources/lixo-papel.png")), 
             TipoEntidade.LIXO_PLASTICO, new ImageIcon(
-                    Entidade.class.getResource("/imagens/lixo-plastico.png")), 
+                    Entidade.class.getResource("/resources/lixo-plastico.png")), 
             TipoEntidade.LIXO_METAL, new ImageIcon(
-                    Entidade.class.getResource("/imagens/lixo-metal.png")), 
+                    Entidade.class.getResource("/resources/lixo-metal.png")), 
             TipoEntidade.LIXO_VIDRO, new ImageIcon(
-                    Entidade.class.getResource("/imagens/lixo-vidro.png")),
+                    Entidade.class.getResource("/resources/lixo-vidro.png")),
             TipoEntidade.LIXEIRA_PAPEL, new ImageIcon(
-                    Entidade.class.getResource("/imagens/lixeira-papel.jpg")), 
+                    Entidade.class.getResource("/resources/lixeira-papel.png")), 
             TipoEntidade.LIXEIRA_PLASTICO, new ImageIcon(
-                    Entidade.class.getResource("/imagens/lixeira-plastico.jpg")), 
+                    Entidade.class.getResource("/resources/lixeira-plastico.png")), 
             TipoEntidade.LIXEIRA_METAL, new ImageIcon(
-                    Entidade.class.getResource("/imagens/lixeira-metal.jpg")), 
+                    Entidade.class.getResource("/resources/lixeira-metal.png")), 
             TipoEntidade.LIXEIRA_VIDRO, new ImageIcon(
-                    Entidade.class.getResource("/imagens/lixeira-vidro.jpg")));
+                    Entidade.class.getResource("/resources/lixeira-vidro.png")));
     
     
     private final ImageIcon imagem;
