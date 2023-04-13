@@ -15,4 +15,5 @@ public interface IJogoPresenter
     void desenharReciclaveis(List<Desenhavel> reciclaveis);
     void mudarPontos(int pontos, boolean record);
     void mudarRecord(int record);
+    void mostrarGameOver();
 }

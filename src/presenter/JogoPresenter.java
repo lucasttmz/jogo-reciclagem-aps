@@ -68,6 +68,15 @@ public class JogoPresenter implements IJogoPresenter, EstadoObserver
     {
         view.mudarRecord(record);
     }
+    
+    @Override
+    public void mostrarGameOver()
+    {
+        view.mostrarGameOver();
+        
+        // Voltar ao menu principal / Mostrar pontuacao / etc
+        // Fazer quando a parte dos records ficar pronta
+    }
 
     // Métodos do Observador
     
@@ -87,6 +96,12 @@ public class JogoPresenter implements IJogoPresenter, EstadoObserver
     public void noMovimentoReciclaveis(List<Desenhavel> reciclaveis)
     {
         desenharReciclaveis(reciclaveis);
+    }
+
+    @Override
+    public void noGameOver()
+    {
+        mostrarGameOver();
     }
 
 }
