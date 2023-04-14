@@ -3,25 +3,25 @@
 ```mermaid
 classDiagram
 	Entidade --|> Desenhavel : implements
-    	Canvas *-- Desenhavel : has
-    	JogoView --|> IJogoView : implements
+        Canvas *-- Desenhavel : has
+        JogoView --|> IJogoView : implements
         JogoView *-- IJogoPresenter : has
 	JogoView *-- Canvas : has
 	Entidade *-- TipoEntidade : has
-    	Estado *-- EstadoObserver : has
+        Estado *-- EstadoObserver : has
 	Estado *-- Desenhavel : has
+        Jogo ..> Dificuldade : depends
    	Jogo ..> Musica : depends
 	Jogo *-- Estado : has
-	Jogo *-- Dificuldade : has
 	JogoPresenter --|> IJogoPresenter : implements
 	JogoPresenter --|> EstadoObserver : implements
 	JogoPresenter *-- Jogo : has
 	JogoPresenter *-- IJogoView : has
 	class Desenhavel{
 		<<interface>>
-		+getImagem() ImageIcon
-		+getX() int
-		+getY() int
+		+getImagem()* ImageIcon
+		+getX()* int
+		+getY()* int
 	}
 	class TipoEntidade{
 		<<enumeration>>
@@ -33,17 +33,18 @@ classDiagram
 		LIXO_PLASTICO
 		LIXO_METAL
 		LIXO_VIDRO
+                - imagem : ImageIcon
+                - TipoEntidade(int id, ImageIcon imagem)
 		+ getEntidadeCorrespondente() TipoEntidade
+                + getImagem() ImageIcon
 	}
 	class Entidade{
-		-imgsEntidade : Map~TipoEntidade~ImageIcon~
 		-tipo : TipoEntidade
-		-imagem : ImageIcon
 		-x : int
 		-y : int
 		-Entidade(TipoEntidade tipo, int x, int y)
-		+getReciclaveisAleatorios(int qtd) List~Desenhavel~
-		+getLixeiras() List~Desenhavel~
+		+getReciclaveisAleatorios(int qtd)$ List~Desenhavel~
+		+getLixeiras()$ List~Desenhavel~
 		+mover(int x, int y) void
 		+getTipo() TipoEntidade
 		+getImagem() ImageIcon
@@ -82,7 +83,6 @@ classDiagram
 	class Jogo{
 		<<implements Runnable>>
 		- estado : Estado
-		- dificuldade : Dificuldade
 		- delayMovimento : int
 		- delayNovaEntidade : int
 		- qtdMovimento : int
@@ -90,7 +90,6 @@ classDiagram
 		- pontosAcelerarJogo : int
 		- ocorreuColisao : boolean
 		+ Jogo(Dificuldade dificuldade)
-		+ configurarDificuldade() void
 		+ iniciarPartida() void
 		+ run() void
 		+ registrarEstadoObserver(EstadoObserver observador) void
@@ -111,23 +110,30 @@ classDiagram
 		FACIL
 		MEDIO
 		DIFICIL
-	}
+                -delayMovimento : int
+                -delayNovaEntidade : int
+                -pontosAcelerar : int
+                -Dificuldade(int delayMovimento, int delayNovaEntidade, int pontosAcelerar)
+                +getDelayMovimento() int
+                +getDelayNovaEntidade() int
+                +getPontosAcelerarJogo() int
+        }
 	class EstadoObserver{
 		<<interface>>
-		+ noIncrementoPontos(int pontos, boolean record) void
-		+ noNovoRecord(int record) void
-		+ noMovimentoReciclaveis(List~Desenhavel~ reciclaveis) void
-		+ noGameOver() void
+		+ noIncrementoPontos(int pontos, boolean record)* void
+		+ noNovoRecord(int record)* void
+		+ noMovimentoReciclaveis(List~Desenhavel~ reciclaveis)* void
+		+ noGameOver()* void
 	}
 	class IJogoPresenter{
 		<<interface>>
-		+ iniciar() void
-		+ selecionarLixeira(int idLixeira) void
-		+ desenharLixeiras() void
-		+ desenharReciclaveis(List<Desenhavel> reciclaveis) void
-		+ mudarPontos(int pontos, boolean record) void
-		+ mudarRecord(int record) void
-		+ mostrarGameOver() void
+		+ iniciar()* void
+		+ selecionarLixeira(int idLixeira)* void
+		+ desenharLixeiras()* void
+		+ desenharReciclaveis(List<Desenhavel> reciclaveis)* void
+		+ mudarPontos(int pontos, boolean record)* void
+		+ mudarRecord(int record)* void
+		+ mostrarGameOver()* void
 	}
 	class JogoPresenter{
 		- view : IJogoView
@@ -147,15 +153,15 @@ classDiagram
 	}
 	class IJogoView{
 		<<interface>>
-		+ setPresenter(IJogoPresenter presenter) void
-		+ iniciarComponentes() void
-		+ desenharLixeiras(List~Desenhavel~ lixeiras) void
-		+ desenharReciclaveis(List~Desenhavel~ reciclaveis) void
-		+ selecionarLixeira(int idLixeira) void
-		+ deselecionarLixeira() void
-		+ mudarPontuacao(int pontuacao, boolean record) void
-		+ mudarRecord(int record) void
-		+ mostrarGameOver() void
+		+ setPresenter(IJogoPresenter presenter)* void
+		+ iniciarComponentes()* void
+		+ desenharLixeiras(List~Desenhavel~ lixeiras)* void
+		+ desenharReciclaveis(List~Desenhavel~ reciclaveis)* void
+		+ selecionarLixeira(int idLixeira)* void
+		+ deselecionarLixeira()* void
+		+ mudarPontuacao(int pontuacao, boolean record)* void
+		+ mudarRecord(int record)* void
+		+ mostrarGameOver()* void
 	}
 	class JogoView{
 		<<extends JFrame>>
@@ -196,9 +202,9 @@ classDiagram
 	Entidade *-- TipoEntidade : has
         Estado *-- EstadoObserver : has
 	Estado *-- Desenhavel : has
+        Jogo ..> Dificuldade : depends
    	Jogo ..> Musica : depends
 	Jogo *-- Estado : has
-	Jogo *-- Dificuldade : has
 	JogoPresenter --|> IJogoPresenter : implements
 	JogoPresenter --|> EstadoObserver : implements
 	JogoPresenter *-- Jogo : has

@@ -24,13 +24,13 @@ class RankingView{
     +RankingView()
     +iniciarComponentes() void
     +setPresenter(IRankingPresenter presenter) void
-    +atualizarRanking(List~Map~String~Integer~~)
+    +atualizarRanking(List~Map~String~Integer~~) void
 } 
 class IRankingView{ 
     <<interface>>
-    +iniciarComponentes() void
-    +setPresenter(IRankingPresenter presenter) void
-    +atualizarRanking(List~Map~String~Integer~~)
+    +iniciarComponentes()* void
+    +setPresenter(IRankingPresenter presenter)* void
+    +atualizarRanking(List~Map~String~Integer~~)* void
 }
 class RankingPresenter{
     -view : IMenuView
@@ -41,8 +41,8 @@ class RankingPresenter{
 }
 class IRankingPresenter{
     <<interface>>
-    +mostrarRanking() void
-    +resetarRanking() void
+    +mostrarRanking()* void
+    +resetarRanking()* void
 }
 
 ```

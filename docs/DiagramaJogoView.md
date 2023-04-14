@@ -8,24 +8,24 @@
 	Canvas *-- Desenhavel : has
 	class IJogoPresenter{
 		<<interface>>
-		+ iniciar() void
-		+ selecionarLixeira(int idLixeira) void
-		+ desenharLixeiras() void
-		+ desenharReciclaveis(List<Desenhavel> reciclaveis) void
-		+ mudarPontos(int pontos, boolean record) void
-		+ mudarRecord(int record) void
+		+ iniciar()* void
+		+ selecionarLixeira(int idLixeira)* void
+		+ desenharLixeiras()* void
+		+ desenharReciclaveis(List<Desenhavel> reciclaveis)* void
+		+ mudarPontos(int pontos, boolean record)* void
+		+ mudarRecord(int record)* void
 	}
 	class IJogoView{
 		<<interface>>
-		+ setPresenter(IJogoPresenter presenter) void
-		+ iniciarComponentes() void
-		+ desenharLixeiras(List~Desenhavel~ lixeiras) void
-		+ desenharReciclaveis(List~Desenhavel~ reciclaveis) void
-		+ selecionarLixeira(int idLixeira) void
-		+ deselecionarLixeira() void
-		+ mudarPontuacao(int pontuacao, boolean record) void
-		+ mudarRecord(int record) void
-		+ mostrarGameOver() void
+		+ setPresenter(IJogoPresenter presenter)* void
+		+ iniciarComponentes()* void
+		+ desenharLixeiras(List~Desenhavel~ lixeiras)* void
+		+ desenharReciclaveis(List~Desenhavel~ reciclaveis)* void
+		+ selecionarLixeira(int idLixeira)* void
+		+ deselecionarLixeira()* void
+		+ mudarPontuacao(int pontuacao, boolean record)* void
+		+ mudarRecord(int record)* void
+		+ mostrarGameOver()* void
 	}
 	class JogoView{
 		<<extends JFrame>>
@@ -54,9 +54,9 @@
 	}
 	class Desenhavel{
 		<<interface>>
-		+getImagem() ImageIcon
-		+getX() int
-		+getY() int
+		+getImagem()* ImageIcon
+		+getX()* int
+		+getY()* int
 	}
 ```
 

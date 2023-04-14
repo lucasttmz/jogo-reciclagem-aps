@@ -29,8 +29,8 @@ class MenuView{
 } 
 class IMenuView{ 
     <<interface>>
-    +iniciarComponentes() void
-    +setPresenter(IMenuPresenter presenter) void
+    +iniciarComponentes()* void
+    +setPresenter(IMenuPresenter presenter)* void
 }
 class MenuPresenter{
     -IMenuView : view
@@ -42,9 +42,9 @@ class MenuPresenter{
 }
 class IMenuPresenter{
     <<interface>>
-    +iniciarPartida() void
-    +atualizarDificuldade(int index) void
-    +habilitarMusica(boolean habilitar) void
+    +iniciarPartida()* void
+    +atualizarDificuldade(int index)* void
+    +habilitarMusica(boolean habilitar)* void
 }
 
 ```

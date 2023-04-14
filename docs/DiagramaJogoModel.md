@@ -6,13 +6,13 @@ classDiagram
 	Entidade *-- TipoEntidade : has
 	Estado *-- Desenhavel : has
 	Jogo *-- Estado : has
-	Jogo *-- Dificuldade : has
+	Jogo ..> Dificuldade : depends
         Jogo ..> Musica : depends
 	class Desenhavel{
 		<<interface>>
-		+getImagem() ImageIcon
-		+getX() int
-		+getY() int
+		+getImagem()* ImageIcon
+		+getX()* int
+		+getY()* int
 	}
 	class TipoEntidade{
 		<<enumeration>>
@@ -24,12 +24,13 @@ classDiagram
 		LIXO_PLASTICO
 		LIXO_METAL
 		LIXO_VIDRO
+                - imagem : ImageIcon
+                - TipoEntidade(int id, ImageIcon imagem)
 		+ getEntidadeCorrespondente() TipoEntidade
+                + getImagem() ImageIcon
 	}
 	class Entidade{
-		-imgsEntidade : Map~TipoEntidade~ImageIcon~ 
 		-tipo : TipoEntidade
-		-imagem : ImageIcon
 		-x : int
 		-y : int
 		-Entidade(TipoEntidade tipo, int x, int y)
@@ -73,7 +74,6 @@ classDiagram
 	class Jogo{
 		<<implements Runnable>>
 		- estado : Estado
-		- dificuldade : Dificuldade
 		- delayMovimento : int
 		- delayNovaEntidade : int
 		- qtdMovimento : int
@@ -81,7 +81,6 @@ classDiagram
 		- pontosAcelerarJogo : int
 		- ocorreuColisao : boolean
 		+ Jogo(Dificuldade dificuldade)
-		+ configurarDificuldade() void
 		+ iniciarPartida() void
 		+ run() void
 		+ registrarEstadoObserver(EstadoObserver observador) void
@@ -102,7 +101,14 @@ classDiagram
 		FACIL
 		MEDIO
 		DIFICIL
-	}
+                -delayMovimento : int
+                -delayNovaEntidade : int
+                -pontosAcelerar : int
+                -Dificuldade(int delayMovimento, int delayNovaEntidade, int pontosAcelerar)
+                +getDelayMovimento() int
+                +getDelayNovaEntidade() int
+                +getPontosAcelerarJogo() int
+        }
 ```
 
 
