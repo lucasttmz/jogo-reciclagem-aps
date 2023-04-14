@@ -3,18 +3,18 @@
 ```mermaid
 classDiagram 
 
-RankingView ..|> IRankingView : implements
-RankingView --* IRankingPresenter : has
-RankingPresenter --* Ranking : has
-RankingPresenter ..|> IRankingPresenter : implements
-RankingPresenter --* IRankingView : has
+RankingView --|> IRankingView : implements
+RankingView *-- IRankingPresenter : has
+RankingPresenter *-- Ranking : has
+RankingPresenter --|> IRankingPresenter : implements
+RankingPresenter *-- IRankingView : has
 
 class Ranking{
     - caminhoArquivo : String
     + salvarNovaPontuacao(String nome, int pontuacao) void
     + resetarRanking() void
     + getRecord() Map~String.Integer~
-    + getRankingCompleto() List~Map~String.Integer~~
+    + getRankingCompleto() List~Map~String~Integer~~
 }
 class RankingView{ 
     <<extends JFrame>>
@@ -24,17 +24,17 @@ class RankingView{
     +RankingView()
     +iniciarComponentes() void
     +setPresenter(IRankingPresenter presenter) void
-    +atualizarRanking(List~Map~String.Integer~~)
+    +atualizarRanking(List~Map~String~Integer~~)
 } 
 class IRankingView{ 
     <<interface>>
     +iniciarComponentes() void
     +setPresenter(IRankingPresenter presenter) void
-    +atualizarRanking(List~Map~String.Integer~~)
+    +atualizarRanking(List~Map~String~Integer~~)
 }
 class RankingPresenter{
-    -IMenuView : view
-    -Ranking : ranking
+    -view : IMenuView
+    -ranking : Ranking
     +RankingPresenter(IRankingView view, Ranking ranking) void
     +mostrarRanking() void
     +resetarRanking() void

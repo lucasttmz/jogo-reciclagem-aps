@@ -2,10 +2,10 @@
 
 ```mermaid
 	classDiagram
-	JogoView ..|> IJogoView : implements
-	JogoView ..* Canvas : has
-	JogoView ..* IJogoPresenter : has
-	Canvas ..* Desenhavel : has
+	JogoView --|> IJogoView : implements
+	JogoView *-- Canvas : has
+	JogoView *-- IJogoPresenter : has
+	Canvas *-- Desenhavel : has
 	class IJogoPresenter{
 		<<interface>>
 		+ iniciar() void
@@ -25,6 +25,7 @@
 		+ deselecionarLixeira() void
 		+ mudarPontuacao(int pontuacao, boolean record) void
 		+ mudarRecord(int record) void
+		+ mostrarGameOver() void
 	}
 	class JogoView{
 		<<extends JFrame>>
@@ -42,6 +43,7 @@
 		+ deselecionarLixeira() void
 		+ mudarPontuacao(int pontuacao, boolean record) void
 		+ mudarRecord(int record) void
+		+ mostrarGameOver() void
 	}
 	class Canvas{
 		<<extends JPanel>>

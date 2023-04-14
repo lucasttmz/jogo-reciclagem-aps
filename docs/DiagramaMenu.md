@@ -2,11 +2,11 @@
 
 ```mermaid
 classDiagram 
-MenuView --* IMenuPresenter : has
-MenuView ..|> IMenuView : implements
-MenuPresenter --* Configuracao : has
-MenuPresenter ..|> IMenuPresenter : implements
-MenuPresenter --* IMenuView : has
+MenuView *-- IMenuPresenter : has
+MenuView --|> IMenuView : implements
+MenuPresenter *-- Configuracao : has
+MenuPresenter --|> IMenuPresenter : implements
+MenuPresenter *-- IMenuView : has
 
 class Configuracao{
     - musicaHabilitada : boolean
