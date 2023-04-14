@@ -10,7 +10,6 @@ import java.util.Optional;
 public class Jogo implements Runnable 
 {
     private final Estado estado;
-    private final Dificuldade dificuldade;
     private int delayMovimento;
     private int delayNovaEntidade;
     private int qtdMovimento;
@@ -19,44 +18,21 @@ public class Jogo implements Runnable
     private boolean ocorreuColisao;
     
     private static final int TAMANHO_JANELA = 450;
+    private static final int TAMANHO_LIXEIRAS = 100;
     
     public Jogo(Dificuldade dificuldade)
     {
         this.estado = new Estado();
-        this.dificuldade = dificuldade;
         this.ocorreuColisao = false;
         
-        configurarDificuldade();
-    }
-    
-    private void configurarDificuldade()
-    {
         this.qtdMovimento = 50;
         this.msDesdeNovaEntidade = 0;
         
-        switch (this.dificuldade)
-        {
-            case FACIL ->
-            {
-                this.delayMovimento = 1250;
-                this.delayNovaEntidade = 4750;
-                this.pontosAcelerarJogo = 50;
-            }
-            case MEDIO ->
-            {
-                this.delayMovimento = 1000;
-                this.delayNovaEntidade = 4000;
-                this.pontosAcelerarJogo = 30;
-            }
-            case DIFICIL ->
-            {
-                this.delayMovimento = 750;
-                this.delayNovaEntidade = 3250;
-                this.pontosAcelerarJogo = 20;
-            }
-        }
+        this.delayMovimento = dificuldade.getDelayMovimento();
+        this.delayNovaEntidade = dificuldade.getDelayNovaEntidade();
+        this.pontosAcelerarJogo = dificuldade.getPontosAcelerarJogo();
     }
-    
+ 
     public void registrarEstadoObserver(EstadoObserver observador)
     {
         estado.registrarObserver(observador);
@@ -100,11 +76,11 @@ public class Jogo implements Runnable
         // Recria a lista com os novos reciclaveis para evitar concorrência
         // durante a alteração da lista.
         List<Desenhavel> novosReciclados = new ArrayList<>(estado.getReciclaveis());
-        List<Entidade> reciclavelAleatorio = Entidade.getReciclaveisAleatorios(qtd);
+        List<Desenhavel> reciclavelAleatorio = Entidade.getReciclaveisAleatorios(qtd);
         
-        for (Entidade entidade : reciclavelAleatorio)
+        for (Desenhavel reciclavel : reciclavelAleatorio)
         {
-            novosReciclados.add(entidade);
+            novosReciclados.add(reciclavel);
         }
         
         estado.setReciclaveis(novosReciclados);
@@ -139,15 +115,12 @@ public class Jogo implements Runnable
             return false;
         
         // Index calculado diretamente com as coordenadas fixas das lixeiras
-        final int INDEX = lixo.getX() / 101;
-        Entidade lixeira = estado.getLixeira(INDEX);
+        final int INDEX = lixo.getX() / (TAMANHO_LIXEIRAS + 1);
+        Entidade lixeira = (Entidade) estado.getLixeira(INDEX);
         
         // Compara lixo com a lixeira correspondente
-        if (lixo.getTipo().getEntidadeCorrespondente() != lixeira.getTipo())
-        {
-            if(!estado.isGameOver())
-                estado.setGameOver(true);
-        }
+        if (!estado.isGameOver() && lixo.getTipo().getEntidadeCorrespondente() != lixeira.getTipo())
+            estado.setGameOver(true);
         
         return true;
     }
@@ -183,6 +156,8 @@ public class Jogo implements Runnable
         // Enquanto não der gameover
         while(!estado.isGameOver())
         {
+            moverReciclaveis();
+            
             // Checa se deve criar novas entidades
             if (msDesdeNovaEntidade >= delayNovaEntidade)
             {
@@ -192,8 +167,6 @@ public class Jogo implements Runnable
                     adicionarReciclaveis(4);
                 msDesdeNovaEntidade = 0;
             }
-            
-            moverReciclaveis();
             
             // Checa se os lixos colidiram com as lixeiras
             if (ocorreuColisao && !estado.isGameOver())

@@ -14,9 +14,9 @@ public enum TipoEntidade
     LIXEIRA_PLASTICO(6), 
     LIXEIRA_VIDRO(7);
         
-    public int id;
+    private final int id;
 
-    TipoEntidade(int id)
+    private TipoEntidade(int id)
     {
         this.id = id;
     }

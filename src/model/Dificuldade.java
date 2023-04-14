@@ -5,14 +5,33 @@ package model;
  */
 public enum Dificuldade
 {
-    FACIL(0), 
-    MEDIO(1), 
-    DIFICIL(2);
-        
-    public int id;
+    FACIL(1250, 4750, 40), 
+    MEDIO(1000, 4000, 30), 
+    DIFICIL(750, 3250, 20);
+    
+    private final int delayMovimento;
+    private final int delayNovaEntidade;
+    private final int pontosAcelerarJogo;
 
-    Dificuldade(int id)
+    private Dificuldade(int delayMovimento, int delayEntidade, int pontosAcelerar)
     {
-        this.id = id;
+        this.delayMovimento = delayMovimento;
+        this.delayNovaEntidade = delayEntidade;
+        this.pontosAcelerarJogo = pontosAcelerar;
     }
+    public int getDelayMovimento()
+    {
+        return delayMovimento;
+    }
+
+    public int getDelayNovaEntidade()
+    {
+        return delayNovaEntidade;
+    }
+
+    public int getPontosAcelerarJogo()
+    {
+        return pontosAcelerarJogo;
+    }
+
 }

@@ -125,9 +125,9 @@ public class Estado
         }
     }
 
-    public Entidade getLixeira(int index)
+    public Desenhavel getLixeira(int index)
     {
-        return (Entidade) lixeiras.get(index);
+        return lixeiras.get(index);
     }
     
     public List<Desenhavel> getLixeiras()

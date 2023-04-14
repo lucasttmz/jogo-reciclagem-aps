@@ -52,9 +52,9 @@ public class Entidade implements Desenhavel
         this.y += y;
     }
     
-    public static List<Entidade> getReciclaveisAleatorios(int qtd)
+    public static List<Desenhavel> getReciclaveisAleatorios(int qtd)
     {
-        List<Entidade> reciclaveis = new ArrayList<>();
+        List<Desenhavel> reciclaveis = new ArrayList<>();
         
         // Posições possiveis e tipos de entidade que irão ser escolhidos em
         // conjunto de forma aleatória depois de serem embaralhados. 
