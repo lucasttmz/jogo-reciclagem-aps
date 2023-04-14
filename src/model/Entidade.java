@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 
 public class Entidade implements Desenhavel
 {
-    private final ImageIcon imagem;
     private final TipoEntidade tipo;
     private int x;
     private int y;
@@ -20,7 +19,6 @@ public class Entidade implements Desenhavel
     private Entidade(TipoEntidade tipo, int x, int y)
     {
         this.tipo = tipo;
-        this.imagem = tipo.getImagem();
         this.x = x;
         this.y = y;
     }
@@ -76,7 +74,7 @@ public class Entidade implements Desenhavel
     @Override
     public ImageIcon getImagem()
     {
-        return imagem;
+        return tipo.getImagem();
     }
 
     @Override
