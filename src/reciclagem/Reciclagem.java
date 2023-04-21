@@ -1,4 +1,7 @@
 package reciclagem;
+import java.io.IOException;
+
+import Ranking.Ranking;
 
 /**
  * Classe utilizada para iniciar a aplicação
@@ -8,9 +11,11 @@ package reciclagem;
 public class Reciclagem
 {
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
-        
+        Ranking ranking = new Ranking();
+
+        ranking.definirRecord();
     }
     
 }

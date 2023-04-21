@@ -1,0 +1,7 @@
+samuel,10
+lucas,5
+neto,3
+alberto,4
+natalia,2
+jonatas,20
+nicole,50
