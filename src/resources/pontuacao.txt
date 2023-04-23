@@ -5,3 +5,7 @@ alberto,4
 natalia,2
 jonatas,20
 nicole,50
+mateus,25
+vagner,13
+manuel,43
+gomes,13

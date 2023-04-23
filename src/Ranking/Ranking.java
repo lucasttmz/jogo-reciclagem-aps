@@ -1,122 +1,114 @@
 package Ranking;
+
 import java.io.*;
 import java.io.IOException;
+import java.security.Key;
 import java.util.*;
 
 public class Ranking {
 
-    private String caminhoTxt = "https://github.com/lucasttmz/jogo-reciclagem-aps/blob/Ranking/src/resources/pontuacao.txt";
-
-    private String pontuacaoFormat;
+    private String caminhoTxt = "C:/Users/Samuca/Documents/GitHub/jogo-reciclagem-aps/src/resources/pontuacao.txt";
     private String record;
+
+    private int valorTestado;
+    private int valorAdicionado;
+    private List<Map<String, Integer>> pontos = new ArrayList<>();
+    
 
     public void salvarNovaPontuacao(String nome, int pontuacao) throws IOException {
 
-        FileWriter FileW = new FileWriter(caminhoTxt, true);
+        FileWriter arquivo = new FileWriter(caminhoTxt, true);
+        PrintWriter gravarArquivo = new PrintWriter(arquivo);
+        gravarArquivo.printf("%s,%d%n",nome,pontuacao);
 
-        pontuacaoFormat = nome + "," + pontuacao + "\n";
-        FileW.append(pontuacaoFormat);
+        arquivo.close();
 
-        System.out.println("Salvo com sucesso");
-        FileW.close();
+        System.out.println("Pontuação salva com sucesso ");
     }
 
-    public void definirRecord() throws IOException {
 
-        int contadorLinha = 0;
+    public void definirRecord() throws IOException{
 
-        ArrayList<String> nome = new ArrayList<>();
-        ArrayList<Integer> pontuacao = new ArrayList<>();
 
-        ArrayList<Integer> pontuacaoOrdenada = new ArrayList<>();
+        FileReader Arquivo = new FileReader(caminhoTxt);
+        BufferedReader salvarValores = new BufferedReader(Arquivo);
 
-        FileReader ler = new FileReader(caminhoTxt);
-        BufferedReader ler2 = new BufferedReader(ler);
+        String linha = salvarValores.readLine();
 
-        // lê a primeira linha do txt
-        String linha = ler2.readLine();
+        
+        
 
-        while (linha != null) {
+        int contadorLinhas = 0;
+        while(linha != null){
 
-            String[] split = linha.split(",");
-
-            nome.add(split[0]);
-            pontuacao.add(Integer.valueOf(split[1]));
-
-            System.out.printf("%d : Valor %d add no array\n", contadorLinha, pontuacao.get(contadorLinha));
-
-            String salvo = "naosalvo";
             boolean jarealizouTroca = true;
+            boolean salvo = false; 
+            String[] linhaStrings = linha.split(",");
+            
+            Map<String, Integer> map = new HashMap<>();
+            map.put(linhaStrings[0], Integer.valueOf(linhaStrings[1]));
+            
+            
+            if (contadorLinhas == 0  ){
 
-            if (0 == contadorLinha) {
-                pontuacaoOrdenada.add(pontuacao.get(contadorLinha));
+                pontos.add(map);
+            }
+            else{
 
-                System.out.println("             Primeiro valor armazenado\n");
-                System.out.printf("Tamanho da pontuacaoOrdenada = %d\n", pontuacaoOrdenada.size());
-            } else {
-                int tamanhoatual = pontuacaoOrdenada.size();
-
-
-                for (int i = 0; i <  tamanhoatual; i++) {
+                int tamanhoatual = pontos.size();
+                for (int i = 0; i < tamanhoatual; i++) {
 
                     if (jarealizouTroca) {
+                            
+                        pontos.get(i).forEach(((t, u) -> valorTestado = u));
+                        map.forEach((key, value) -> valorAdicionado = value);
+                            
+                        if (valorAdicionado > valorTestado) {
 
-                        boolean teste = pontuacao.get(contadorLinha) > pontuacaoOrdenada.get(i);
-                        System.out.printf("%d>%d: %b\n", pontuacao.get(contadorLinha), pontuacaoOrdenada.get(i), teste);
+                            List<Map<String, Integer>> tempAList = new ArrayList<>();
 
-                        if (teste) {
+                            //remove os valores menores e salva em uma lista temporaria
+                            for (int j = i; j < tamanhoatual; j++) {
 
-                            ArrayList<Integer> tempAList = new ArrayList<>();
-
-                            for(int j = i; j < tamanhoatual; j++){
-
-                                System.out.printf("Adicionando o numero %d\n",pontuacaoOrdenada.get(i));
-                                tempAList.add(pontuacaoOrdenada.get(i));
-                                System.out.printf("Removendo o numero %d\n",pontuacaoOrdenada.get(i));
-                                pontuacaoOrdenada.remove(i);
-                                System.out.println(j);
-                                System.out.println(i);
+                                tempAList.add(pontos.get(i));
+                                pontos.remove(i);
                             }
-                            System.out.println(pontuacaoOrdenada);
-                            System.out.println(tempAList);
-                            pontuacaoOrdenada.add(pontuacao.get(contadorLinha));
-
-                            for(int g = 0; g < tempAList.size(); g++){
-
-                                pontuacaoOrdenada.add(tempAList.get(g));
-
+                            
+                            //Adiciona o valor maior
+                            pontos.add(map);
+        
+                            //Adiciona os valores da lista temporaria na lista principal
+                            for (int g = 0; g < tempAList.size(); g++) {
+                                pontos.add(tempAList.get(g));
                             }
                             tempAList.clear();
 
                             System.out.println("Troca realizada");
-                            salvo = "jasalvo";
+                            salvo = true;
                             jarealizouTroca = false;
                         }
-                    } else {
-
-                            System.out.println("Não salvou");
-                    }
-
+                        else{}
+                    } else { System.out.println("Não salvou");}
                 }
 
-                if (salvo.equals("jasalvo")) {
-                    
-                } else {
-                    pontuacaoOrdenada.add(pontuacao.get(contadorLinha));
+                if (salvo){} 
+                else {
+                    // Caso o número for o menos ele é add ao final de tudo
+                    pontos.add(map);
                 }
+
             }
 
-            System.out.printf("Tamnho da pontuacaoOrdenada = %d\n", pontuacaoOrdenada.size());
-            System.out.println(pontuacaoOrdenada);
-
-            linha = ler2.readLine();
-            contadorLinha++;
+            linha = salvarValores.readLine();
+            contadorLinhas++;
         }
-        ler2.close();
-
-        System.out.println(pontuacaoOrdenada);
-
+            
+        System.out.println(pontos);
+        Arquivo.close();
+            
+            
     }
+
 
     public String getRecord() {
 
