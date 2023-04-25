@@ -15,6 +15,7 @@ public class Reciclagem
         //RankingView view = new RankingView();
         Ranking ranking = new Ranking();
         ranking.definirRecord();
+
     }
     
 }

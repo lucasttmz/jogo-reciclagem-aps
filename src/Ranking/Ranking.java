@@ -2,18 +2,20 @@ package Ranking;
 
 import java.io.*;
 import java.io.IOException;
-import java.security.Key;
 import java.util.*;
 
 public class Ranking {
 
-    private String caminhoTxt = "C:/Users/Samuca/Documents/GitHub/jogo-reciclagem-aps/src/resources/pontuacao.txt";
-    private String record;
-
-    private int valorTestado;
-    private int valorAdicionado;
+    private String caminhoTxt = "C:/Users/InformativaMoura/Desktop/jogo-reciclagem-aps/src/resources/pontuacao.txt";
     private List<Map<String, Integer>> pontos = new ArrayList<>();
     
+    private int valorTestado;
+    private int valorAdicionado;
+    
+    public Ranking() {
+
+        //definirRecord();
+    }
 
     public void salvarNovaPontuacao(String nome, int pontuacao) throws IOException {
 
@@ -26,7 +28,17 @@ public class Ranking {
         System.out.println("Pontuação salva com sucesso ");
     }
 
-
+    public void resetarRanking() throws IOException{
+        
+        FileWriter arquivo = new FileWriter(caminhoTxt);
+        PrintWriter writer = new PrintWriter(arquivo);
+        writer.print("");
+        writer.close(); 
+        
+        pontos.clear();
+        System.out.println("Ranking deletado");
+    }
+    
     public void definirRecord() throws IOException{
 
 
@@ -35,8 +47,6 @@ public class Ranking {
 
         String linha = salvarValores.readLine();
 
-        
-        
 
         int contadorLinhas = 0;
         while(linha != null){
@@ -87,16 +97,12 @@ public class Ranking {
                             salvo = true;
                             jarealizouTroca = false;
                         }
-                        else{}
                     } else { System.out.println("Não salvou");}
                 }
 
-                if (salvo){} 
-                else {
-                    // Caso o número for o menos ele é add ao final de tudo
-                    pontos.add(map);
-                }
-
+                if (!salvo){
+                    pontos.add(map); // Caso o número for o menos ele é add ao final de tudo
+                } 
             }
 
             linha = salvarValores.readLine();
@@ -104,19 +110,11 @@ public class Ranking {
         }
             
         System.out.println(pontos);
-        Arquivo.close();
-            
-            
+        Arquivo.close();      
     }
 
-
-    public String getRecord() {
-
-        return record;
+    public List<Map<String, Integer>> getRecord() {
+        return pontos;
     }
 
 }
-
-// Files.lines(path).forEach(System.out::println);
-// Path path = Paths.get(caminhoTxt);
-// long count = Files.lines(path).count();
