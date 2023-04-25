@@ -113,7 +113,8 @@ public class Ranking {
         Arquivo.close();      
     }
 
-    public List<Map<String, Integer>> getRecord() {
+    public List<Map<String, Integer>> getRecord() throws IOException{
+        definirRecord();
         return pontos;
     }
 

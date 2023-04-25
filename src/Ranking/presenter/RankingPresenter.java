@@ -1,17 +1,29 @@
 package Ranking.presenter;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import Ranking.Ranking;
 import presenter.IRankingPresenter;
 public class RankingPresenter implements IRankingPresenter{
 
+    private Ranking RankingClass;
+    
     @Override
-    public void mostrarRanking() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mostrarRanking'");
+    public List<Map<String, Integer>> mostrarRanking() throws IOException{
+        
+        RankingClass = new Ranking();
+        return RankingClass.getRecord();
     }
 
     @Override
-    public void resetarRanking() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resetarRanking'");
+    public void resetarRanking() throws IOException {
+
+        RankingClass = new Ranking();
+        RankingClass.resetarRanking();
+
+
     }
     
 }

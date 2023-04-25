@@ -1,7 +1,7 @@
 package view;
 
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 import presenter.IRankingPresenter;
 
 /**
@@ -12,5 +12,5 @@ public interface IRankingView
 {
     void iniciarComponentes();
     void setPresenter(IRankingPresenter presenter);
-    void atualizarRanking(List<Map<String, Integer>> pontuacoes);
+    void atualizarRanking(List<Map<String, Integer>> pontuacoes) throws IOException;
 }
