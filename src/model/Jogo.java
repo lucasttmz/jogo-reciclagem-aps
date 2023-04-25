@@ -32,7 +32,122 @@ public class Jogo implements Runnable
         this.delayNovaEntidade = dificuldade.getDelayNovaEntidade();
         this.pontosAcelerarJogo = dificuldade.getPontosAcelerarJogo();
     }
- 
+    
+    public void iniciarPartida()
+    {
+        if (!estado.isIniciado())
+        {
+            estado.configurarInicioPartida();
+            new Thread(this).start();
+        }
+    }
+
+    @Override
+    public void run()
+    {
+        while(!estado.isGameOver())
+        {
+            moverReciclaveis();
+            
+            boolean ocorreuReciclagem = ocorreuColisao && !estado.isGameOver();
+            if (ocorreuReciclagem)
+                incrementarPontuacao();
+            
+            boolean incluirNovosReciclaveis = msDesdeNovaEntidade >= delayNovaEntidade;
+            if (incluirNovosReciclaveis)
+                adicionarReciclaveis(calcularQuantidadeReciclaveis());
+            
+            esperarDelayParaProximoMovimento();
+        }
+    }
+    
+    private void moverReciclaveis()
+    {
+        List<Desenhavel> novosReciclados = new ArrayList<>();
+        
+        // Move cada um dos lixos (esquerda pra direita).
+        for (Desenhavel reciclavel : estado.getReciclaveis())
+        {
+            Entidade e = (Entidade) reciclavel;
+            e.mover(0, qtdMovimento);
+            
+            if (checarColisao(e))
+                ocorreuColisao = true;
+            else
+                novosReciclados.add(e);
+        }
+        
+        estado.setReciclaveis(novosReciclados);
+    }
+    
+    private boolean checarColisao(Entidade lixo)
+    {
+        boolean nenhumaColisao = lixo.getY() < TAMANHO_JANELA;
+        if(nenhumaColisao)
+            return false;
+        
+        int indexColisao = lixo.getX() / TAMANHO_LIXEIRAS;
+        TipoEntidade lixeiraColidida = ((Entidade) estado.getLixeira(indexColisao)).getTipo();
+        
+        boolean reciclagemIncorreta = lixeiraColidida.getTipoCorrespondente() != lixo.getTipo();
+        if (reciclagemIncorreta && !estado.isGameOver() )
+            estado.setGameOver(true);
+        
+        return true;
+    }
+    
+    private void incrementarPontuacao()
+    {
+        estado.incrementarPontos();
+        ocorreuColisao = false;
+        
+        boolean acelerarJogo = estado.getPontos() >= pontosAcelerarJogo;
+        if (acelerarJogo)
+        {
+            delayMovimento -= 5;
+            delayNovaEntidade -= 15;
+        }
+    }
+    
+    private int calcularQuantidadeReciclaveis()
+    {
+        int pontuacaoAtual = estado.getPontos();
+        
+        if (pontuacaoAtual < 40)
+            return (pontuacaoAtual / 10) + 1;
+        return 4;
+    }
+    
+    private void adicionarReciclaveis(int qtd)
+    {
+        // Recria a lista com os novos reciclaveis para evitar concorrência
+        // durante a alteração da lista.
+        List<Desenhavel> novosReciclados = new ArrayList<>(estado.getReciclaveis());
+        List<Desenhavel> reciclavelAleatorio = Entidade.getReciclaveisAleatorios(qtd);
+        
+        for (Desenhavel reciclavel : reciclavelAleatorio)
+        {
+            novosReciclados.add(reciclavel);
+        }
+        
+        msDesdeNovaEntidade = 0;
+        estado.setReciclaveis(novosReciclados);
+    }
+    
+    private void esperarDelayParaProximoMovimento()
+    {
+        try
+        {
+            Thread.sleep(delayMovimento);
+        } catch (InterruptedException ex)
+        {
+            System.out.println(ex);
+        }
+        
+        msDesdeNovaEntidade += delayMovimento;
+        
+    }
+    
     public void registrarEstadoObserver(EstadoObserver observador)
     {
         estado.registrarObserver(observador);
@@ -49,12 +164,11 @@ public class Jogo implements Runnable
         
         // Seleciona lixeira em caso de nenhuma já estar selecionado ou
         // troca a lixeira com a lixeira já selecionada.
-        if (selecionada.isEmpty())
-        {
-            estado.setIdLixeiraSelecionada(Optional.of(idLixeira));
-            return null;
-        }
-        return moverLixeira(selecionada.get(), idLixeira);
+        if (selecionada.isPresent())
+            return moverLixeira(selecionada.get(), idLixeira);
+        
+        estado.setIdLixeiraSelecionada(Optional.of(idLixeira));
+        return null;
     }
     
     private List<Desenhavel> moverLixeira(int origem, int destino)
@@ -71,120 +185,5 @@ public class Jogo implements Runnable
         return lixeiras;
     }
     
-    private void adicionarReciclaveis(int qtd)
-    {
-        // Recria a lista com os novos reciclaveis para evitar concorrência
-        // durante a alteração da lista.
-        List<Desenhavel> novosReciclados = new ArrayList<>(estado.getReciclaveis());
-        List<Desenhavel> reciclavelAleatorio = Entidade.getReciclaveisAleatorios(qtd);
-        
-        for (Desenhavel reciclavel : reciclavelAleatorio)
-        {
-            novosReciclados.add(reciclavel);
-        }
-        
-        estado.setReciclaveis(novosReciclados);
-    }
     
-    private void moverReciclaveis()
-    {
-        List<Desenhavel> novosReciclados = new ArrayList<>();
-        
-        // Move cada um dos lixos (esquerda pra direita).
-        for (Desenhavel reciclavel : estado.getReciclaveis())
-        {
-            Entidade e = (Entidade) reciclavel;
-            e.mover(0, qtdMovimento);
-            
-            if (checarColisao(e)){
-                ocorreuColisao = true;
-            }
-            else
-            {
-                novosReciclados.add(e);
-            }
-        }
-        
-        estado.setReciclaveis(novosReciclados);
-    }
-    
-    private boolean checarColisao(Entidade lixo)
-    {
-        // Não houve colisão entre lixeira e lixo
-        if(lixo.getY() < TAMANHO_JANELA)
-            return false;
-        
-        // Index calculado diretamente com as coordenadas fixas das lixeiras
-        final int INDEX = lixo.getX() / (TAMANHO_LIXEIRAS + 1);
-        Entidade lixeira = (Entidade) estado.getLixeira(INDEX);
-        
-        // Compara lixo com a lixeira correspondente
-        if (!estado.isGameOver() && lixo.getTipo().getEntidadeCorrespondente() != lixeira.getTipo())
-            estado.setGameOver(true);
-        
-        return true;
-    }
-    
-    private void incrementarPontuacao()
-    {
-        estado.incrementarPontuacao();
-        if (estado.getPontuacao() >= pontosAcelerarJogo)
-        {
-            delayMovimento -= 5;
-            delayNovaEntidade -= 15;
-        }
-    }
-    
-    public void iniciarPartida()
-    {
-        if (!estado.isIniciado())
-        {
-            estado.setIniciado(true);
-            estado.setPontuacao(0);
-            estado.setRecordAtual(10);
-            
-            // Quando a classe record estiver pronta.
-            // estado.setRecordAtual(new Record().getRecord());
-            
-            new Thread(this).start();
-        }
-    }
-
-    @Override
-    public void run()
-    {
-        // Enquanto não der gameover
-        while(!estado.isGameOver())
-        {
-            moverReciclaveis();
-            
-            // Checa se deve criar novas entidades
-            if (msDesdeNovaEntidade >= delayNovaEntidade)
-            {
-                if (estado.getPontuacao() < 40)
-                    adicionarReciclaveis((estado.getPontuacao() / 10) + 1);
-                else
-                    adicionarReciclaveis(4);
-                msDesdeNovaEntidade = 0;
-            }
-            
-            // Checa se os lixos colidiram com as lixeiras
-            if (ocorreuColisao && !estado.isGameOver())
-            {
-                incrementarPontuacao();
-                ocorreuColisao = false;
-            }
-            
-            // Dorme o thread pelo tempo apropriado
-            try
-            {
-                Thread.sleep(delayMovimento);
-            } catch (InterruptedException ex)
-            {
-                System.out.println(ex);
-            }
-            
-            msDesdeNovaEntidade += delayMovimento;
-        }
-    }
 }

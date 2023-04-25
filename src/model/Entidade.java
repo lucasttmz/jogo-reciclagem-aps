@@ -16,19 +16,6 @@ public class Entidade implements Desenhavel
     private int x;
     private int y;
     
-    private Entidade(TipoEntidade tipo, int x, int y)
-    {
-        this.tipo = tipo;
-        this.x = x;
-        this.y = y;
-    }
-    
-    public void mover(int x, int y)
-    {
-        this.x += x;
-        this.y += y;
-    }
-    
     public static List<Desenhavel> getReciclaveisAleatorios(int qtd)
     {
         List<Desenhavel> reciclaveis = new ArrayList<>();
@@ -64,6 +51,19 @@ public class Entidade implements Desenhavel
         lixeiras.add(new Entidade(TipoEntidade.LIXEIRA_VIDRO, 301, 0));
         
         return lixeiras;
+    }
+    
+    private Entidade(TipoEntidade tipo, int x, int y)
+    {
+        this.tipo = tipo;
+        this.x = x;
+        this.y = y;
+    }
+    
+    public void mover(int x, int y)
+    {
+        this.x += x;
+        this.y += y;
     }
     
     public TipoEntidade getTipo()

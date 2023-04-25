@@ -12,7 +12,7 @@ public class Estado
     private boolean iniciado;
     private boolean gameOver;
     private int recordAtual;
-    private int pontuacao;
+    private int pontos;
     private Optional<Integer> idLixeiraSelecionada;
     private List<Desenhavel> reciclaveis;
     private List<Desenhavel> lixeiras;
@@ -33,6 +33,16 @@ public class Estado
         this.observadores.add(observador);
     }
     
+    public void configurarInicioPartida()
+    {
+        setIniciado(true);
+        setPontos(0);
+        setRecordAtual(10);
+        
+        // Quando a classe record estiver pronta.
+        // setRecordAtual(new Record().getRecord());
+    }
+    
     public Optional<Integer> getIdLixeiraSelecionada()
     {
         return idLixeiraSelecionada;
@@ -43,24 +53,24 @@ public class Estado
         this.idLixeiraSelecionada = idLixeiraSelecionada;
     }
     
-    public void setPontuacao(int pontuacao)
+    public void setPontos(int pontos)
     {
-        this.pontuacao = pontuacao;
+        this.pontos = pontos;
         
         for (EstadoObserver obs : observadores)
         {
-            obs.noIncrementoPontuacao(pontuacao, isRecord());
+            obs.noIncrementoPontuacao(pontos, isRecord());
         }
     }
     
-    public void incrementarPontuacao()
+    public void incrementarPontos()
     {
-        setPontuacao(this.pontuacao + 1);
+        setPontos(this.pontos + 1);
     }
     
-    public int getPontuacao()
+    public int getPontos()
     {
-        return pontuacao;
+        return pontos;
     }
     
     public void setRecordAtual(int recordAtual)
@@ -80,7 +90,7 @@ public class Estado
     
     public boolean isRecord()
     {
-        return getPontuacao() > getRecordAtual();
+        return getPontos() > getRecordAtual();
     }
 
     public void setIniciado(boolean iniciado)
