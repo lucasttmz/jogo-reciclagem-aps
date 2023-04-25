@@ -1,7 +1,8 @@
 package reciclagem;
 import java.io.IOException;
 
-import Ranking.Ranking;
+import Ranking.*;
+import Ranking.view.RankingView;
 /**
  * Classe utilizada para iniciar a aplicação
  * Podem reescrever ela para testar as suas classes
@@ -12,9 +13,7 @@ public class Reciclagem
 
     public static void main(String[] args) throws IOException
     {
-        //RankingView view = new RankingView();
-        Ranking ranking = new Ranking();
-        ranking.definirRecord();
+        RankingView rankingView = new RankingView();
     }
     
 }
