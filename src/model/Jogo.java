@@ -15,6 +15,7 @@ public class Jogo implements Runnable
     private int qtdMovimento;
     private int msDesdeNovaEntidade;
     private int pontosAcelerarJogo;
+    private int pontosIncrementarReciclaveis;
     private boolean ocorreuColisao;
     
     private static final int TAMANHO_JANELA = 450;
@@ -31,6 +32,7 @@ public class Jogo implements Runnable
         this.delayMovimento = dificuldade.getDelayMovimento();
         this.delayNovaEntidade = dificuldade.getDelayNovaEntidade();
         this.pontosAcelerarJogo = dificuldade.getPontosAcelerarJogo();
+        this.pontosIncrementarReciclaveis = dificuldade.getPontosIncrementarReciclaveis();
     }
     
     public void iniciarPartida()
@@ -65,13 +67,12 @@ public class Jogo implements Runnable
     {
         List<Desenhavel> novosReciclados = new ArrayList<>();
         
-        // Move cada um dos lixos (esquerda pra direita).
         for (Desenhavel reciclavel : estado.getReciclaveis())
         {
             Entidade e = (Entidade) reciclavel;
             e.mover(0, qtdMovimento);
             
-            if (checarColisao(e))
+            if (checarReciclagem(e))
                 ocorreuColisao = true;
             else
                 novosReciclados.add(e);
@@ -79,8 +80,8 @@ public class Jogo implements Runnable
         
         estado.setReciclaveis(novosReciclados);
     }
-    
-    private boolean checarColisao(Entidade lixo)
+   
+    private boolean checarReciclagem(Entidade lixo)
     {
         boolean nenhumaColisao = lixo.getY() < TAMANHO_JANELA;
         if(nenhumaColisao)
@@ -112,9 +113,10 @@ public class Jogo implements Runnable
     private int calcularQuantidadeReciclaveis()
     {
         int pontuacaoAtual = estado.getPontos();
+        int pontosDificuldadeMax = pontosIncrementarReciclaveis * 4;
         
-        if (pontuacaoAtual < 40)
-            return (pontuacaoAtual / 10) + 1;
+        if (pontuacaoAtual < pontosDificuldadeMax)
+            return (pontuacaoAtual / pontosIncrementarReciclaveis) + 1;
         return 4;
     }
     
@@ -162,8 +164,6 @@ public class Jogo implements Runnable
     {
         Optional<Integer> selecionada = estado.getIdLixeiraSelecionada();
         
-        // Seleciona lixeira em caso de nenhuma já estar selecionado ou
-        // troca a lixeira com a lixeira já selecionada.
         if (selecionada.isPresent())
             return moverLixeira(selecionada.get(), idLixeira);
         
@@ -175,7 +175,6 @@ public class Jogo implements Runnable
     {
         List<Desenhavel> lixeiras = estado.getLixeiras();
         
-        // Troca a posição das lixeiras.
         Desenhavel temp = lixeiras.get(origem);
         lixeiras.set(origem, lixeiras.get(destino));
         lixeiras.set(destino, temp);
@@ -184,6 +183,5 @@ public class Jogo implements Runnable
         
         return lixeiras;
     }
-    
     
 }
