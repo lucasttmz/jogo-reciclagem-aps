@@ -1,7 +1,6 @@
 package presenter;
 
 import java.io.IOException;
-import java.util.*;
 
 /**
  * Interface para o Presenter do Ranking
@@ -9,6 +8,6 @@ import java.util.*;
  */
 public interface IRankingPresenter
 {
-    List<Map<String, Integer>> mostrarRanking() throws IOException;
+    void mostrarRanking() throws IOException;
     void resetarRanking() throws IOException;
 }

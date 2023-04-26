@@ -1,20 +1,20 @@
 package Ranking.presenter;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import Ranking.Ranking;
+import Ranking.view.RankingView;
 import presenter.IRankingPresenter;
 public class RankingPresenter implements IRankingPresenter{
 
     private Ranking RankingClass;
+    private RankingView rankingView;
     
     @Override
-    public List<Map<String, Integer>> mostrarRanking() throws IOException{
-        
-        RankingClass = new Ranking();
-        return RankingClass.getRecord();
+    public void mostrarRanking() throws IOException{
+
+        rankingView.atualizarRanking(RankingClass.getRecord());
+
     }
 
     @Override

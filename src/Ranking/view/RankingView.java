@@ -12,8 +12,7 @@ import presenter.IRankingPresenter;
 public class RankingView extends JFrame implements IRankingView {
     
     private JPanel jPanel;
-    private RankingPresenter presenter;
-    private List<Map<String, Integer>> pontuacoes;
+    private IRankingPresenter presenter;
     
     public RankingView() throws IOException{
         
@@ -24,7 +23,7 @@ public class RankingView extends JFrame implements IRankingView {
         
         iniciarComponentes();
         setPresenter(presenter);
-        atualizarRanking(pontuacoes);
+        presenter.mostrarRanking();
         
         
     }
@@ -37,7 +36,6 @@ public class RankingView extends JFrame implements IRankingView {
         this.add(jPanel);
 
         JLabel lblTitulo = new JLabel("Ranking");
-
         jPanel.add(lblTitulo);
 
     }
@@ -45,14 +43,13 @@ public class RankingView extends JFrame implements IRankingView {
     @Override
     public void setPresenter(IRankingPresenter presenter) {
         
-        presenter = new RankingPresenter();
+        this.presenter = presenter;
         
     }
 
     @Override
     public void atualizarRanking(List<Map<String, Integer>> pontuacoes) throws IOException {
 
-        pontuacoes = presenter.mostrarRanking();
         
         for(int i = 0; i < pontuacoes.size(); i++){
 
