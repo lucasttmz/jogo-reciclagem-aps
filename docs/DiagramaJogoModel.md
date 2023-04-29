@@ -112,4 +112,45 @@ classDiagram
 ```
 
 
-# Diagrama Sequencial:
+# Fluxograma Jogo:
+
+```mermaid
+flowchart TB
+    classDef iniciofim fill:#AAA
+    classDef instrucao fill:#FFF
+
+    A((INÍCIO))
+    B[INICIA PONTUAÇÃO]:::instrucao
+    C[INICIA RECORD]:::instrucao
+    D[(RECORD)]
+    E[INICIA THREAD DO JOGO]:::instrucao
+    F{GAME\nOVER?}
+    G[MOVE RECICLÁVEIS]:::instrucao
+    H{NOVOS RECICLÁVEIS?}
+    I[ADICIONA RECICLÁVEIS]:::instrucao
+    J{RECICLOU?}
+    K[INCREMENTA\nPONTOS]:::instrucao
+    L[ESPERA PRÓXIMO\nCICLO DO JOGO]:::instrucao
+    Z((FIM))
+    
+    A ===> B
+    subgraph "INICIALIZAÇÃO DA PARTIDA"
+    B --> C
+    D <--> C
+    C --> E
+    end
+    E --> F
+    subgraph "LOOP PRINCIPAL DO JOGO"
+    direction BT
+    F -->|Não| G
+    G --> H
+    H -->|Sim| I
+    I --> J
+    H -->|Não| J
+    J --> |Sim| K
+    K --> L
+    J -->|Não| L
+    end
+    L --> F
+    F ==>|Sim| Z
+```
