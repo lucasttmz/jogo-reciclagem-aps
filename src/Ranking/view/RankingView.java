@@ -44,7 +44,7 @@ public class RankingView extends JFrame implements IRankingView {
     @Override
     public void setPresenter(RankingPresenter presenter) {
         
-        this.presenter = new RankingPresenter();
+        this.presenter = new RankingPresenter(this);
         
     }
 
