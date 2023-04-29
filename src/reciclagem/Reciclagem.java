@@ -1,5 +1,4 @@
 package reciclagem;
-import java.io.IOException;
 
 import Ranking.view.RankingView;
 /**
@@ -10,7 +9,7 @@ import Ranking.view.RankingView;
 public class Reciclagem
 {
 
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args)
     {
         RankingView view = new RankingView();
         

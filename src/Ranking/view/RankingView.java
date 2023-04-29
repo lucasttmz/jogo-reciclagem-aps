@@ -1,20 +1,18 @@
 package Ranking.view;
-import view.IRankingView;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 
 import Ranking.presenter.RankingPresenter;
-import presenter.IRankingPresenter;
+import view.*;
 
 public class RankingView extends JFrame implements IRankingView {
     
     private JPanel jPanel;
-    private IRankingPresenter presenter;
+    private RankingPresenter presenter;
     
-    public RankingView() throws IOException{
+    public RankingView(){
         
         super("Teste");
         setSize(600, 600);
@@ -23,6 +21,7 @@ public class RankingView extends JFrame implements IRankingView {
         
         iniciarComponentes();
         setPresenter(presenter);
+
         presenter.mostrarRanking();
         
         
@@ -38,17 +37,19 @@ public class RankingView extends JFrame implements IRankingView {
         JLabel lblTitulo = new JLabel("Ranking");
         jPanel.add(lblTitulo);
 
+        System.out.println("Componentes Iniciados");
+
     }
     
     @Override
-    public void setPresenter(IRankingPresenter presenter) {
+    public void setPresenter(RankingPresenter presenter) {
         
-        this.presenter = presenter;
+        this.presenter = new RankingPresenter();
         
     }
 
     @Override
-    public void atualizarRanking(List<Map<String, Integer>> pontuacoes) throws IOException {
+    public void atualizarRanking(List<Map<String, Integer>> pontuacoes){
 
         
         for(int i = 0; i < pontuacoes.size(); i++){

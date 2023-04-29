@@ -12,11 +12,6 @@ public class Ranking {
     private int valorTestado;
     private int valorAdicionado;
     
-    public Ranking() {
-
-        //definirRecord();
-    }
-
     public void salvarNovaPontuacao(String nome, int pontuacao) throws IOException {
 
         FileWriter arquivo = new FileWriter(caminhoTxt, true);
@@ -28,93 +23,114 @@ public class Ranking {
         System.out.println("Pontuação salva com sucesso ");
     }
 
-    public void resetarRanking() throws IOException{
+    public void resetarRanking(){
         
-        FileWriter arquivo = new FileWriter(caminhoTxt);
-        PrintWriter writer = new PrintWriter(arquivo);
-        writer.print("");
-        writer.close(); 
+        try
+        {
+            FileWriter arquivo = new FileWriter(caminhoTxt);
+            PrintWriter writer = new PrintWriter(arquivo);
+            writer.print("");
+            writer.close(); 
         
-        pontos.clear();
-        System.out.println("Ranking deletado");
+            pontos.clear();
+            System.out.println("Ranking deletado");
+        } 
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
     }
     
-    public void definirRecord() throws IOException{
+    public void definirRecord(){
 
 
-        FileReader Arquivo = new FileReader(caminhoTxt);
-        BufferedReader salvarValores = new BufferedReader(Arquivo);
+        try 
+        {
+            FileReader Arquivo = new FileReader(caminhoTxt);
+            BufferedReader salvarValores = new BufferedReader(Arquivo);
 
-        String linha = salvarValores.readLine();
+            String linha = salvarValores.readLine();
 
 
-        int contadorLinhas = 0;
-        while(linha != null){
+            int contadorLinhas = 0;
+            while(linha != null){
 
-            boolean jarealizouTroca = true;
-            boolean salvo = false; 
-            String[] linhaStrings = linha.split(",");
+                boolean jarealizouTroca = true;
+                boolean salvo = false; 
+                String[] linhaStrings = linha.split(",");
+                
+                Map<String, Integer> map = new HashMap<>();
+                map.put(linhaStrings[0], Integer.valueOf(linhaStrings[1]));
+                
+                
+                if (contadorLinhas == 0  ){
+
+                    pontos.add(map);
+                }
+                else{
+
+                    int tamanhoatual = pontos.size();
+                    for (int i = 0; i < tamanhoatual; i++) {
+
+                        if (jarealizouTroca) {
+                                
+                            pontos.get(i).forEach(((t, u) -> valorTestado = u));
+                            map.forEach((key, value) -> valorAdicionado = value);
+                                
+                            if (valorAdicionado > valorTestado) {
+
+                                List<Map<String, Integer>> tempAList = new ArrayList<>();
+
+                                //remove os valores menores e salva em uma lista temporaria
+                                for (int j = i; j < tamanhoatual; j++) {
+
+                                    tempAList.add(pontos.get(i));
+                                    pontos.remove(i);
+                                }
+                                
+                                //Adiciona o valor maior
+                                pontos.add(map);
             
-            Map<String, Integer> map = new HashMap<>();
-            map.put(linhaStrings[0], Integer.valueOf(linhaStrings[1]));
-            
-            
-            if (contadorLinhas == 0  ){
+                                //Adiciona os valores da lista temporaria na lista principal
+                                for (int g = 0; g < tempAList.size(); g++) {
+                                    pontos.add(tempAList.get(g));
+                                }
+                                tempAList.clear();
 
-                pontos.add(map);
-            }
-            else{
-
-                int tamanhoatual = pontos.size();
-                for (int i = 0; i < tamanhoatual; i++) {
-
-                    if (jarealizouTroca) {
-                            
-                        pontos.get(i).forEach(((t, u) -> valorTestado = u));
-                        map.forEach((key, value) -> valorAdicionado = value);
-                            
-                        if (valorAdicionado > valorTestado) {
-
-                            List<Map<String, Integer>> tempAList = new ArrayList<>();
-
-                            //remove os valores menores e salva em uma lista temporaria
-                            for (int j = i; j < tamanhoatual; j++) {
-
-                                tempAList.add(pontos.get(i));
-                                pontos.remove(i);
+                                System.out.println("Troca realizada");
+                                salvo = true;
+                                jarealizouTroca = false;
                             }
-                            
-                            //Adiciona o valor maior
-                            pontos.add(map);
-        
-                            //Adiciona os valores da lista temporaria na lista principal
-                            for (int g = 0; g < tempAList.size(); g++) {
-                                pontos.add(tempAList.get(g));
-                            }
-                            tempAList.clear();
+                        } else { System.out.println("Não salvou");}
+                    }
 
-                            System.out.println("Troca realizada");
-                            salvo = true;
-                            jarealizouTroca = false;
-                        }
-                    } else { System.out.println("Não salvou");}
+                    if (!salvo){
+                        pontos.add(map); // Caso o número for o menos ele é add ao final de tudo
+                    } 
                 }
 
-                if (!salvo){
-                    pontos.add(map); // Caso o número for o menos ele é add ao final de tudo
-                } 
+                linha = salvarValores.readLine();
+                contadorLinhas++;
             }
-
-            linha = salvarValores.readLine();
-            contadorLinhas++;
+                
+            System.out.println(pontos);
+            Arquivo.close();          
+        } 
+        catch (Exception e) 
+        {
+            System.out.println(e);
         }
-            
-        System.out.println(pontos);
-        Arquivo.close();      
     }
 
-    public List<Map<String, Integer>> getRecord() throws IOException{
-        definirRecord();
+    public List<Map<String, Integer>> getRecord(){
+        
+        try {
+            definirRecord();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
         return pontos;
     }
 
