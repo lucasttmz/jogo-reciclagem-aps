@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Ranking {
 
-    private String caminhoTxt = "C:/Users/InformativaMoura/Desktop/jogo-reciclagem-aps/src/resources/pontuacao.txt";
+    private String caminhoTxt = "C:/Users/Samuca/Documents/GitHub/jogo-reciclagem-aps/src/resources/pontuacao.txt";
     private List<Map<String, Integer>> pontos = new ArrayList<>();
     
     private int valorTestado;
@@ -101,7 +101,7 @@ public class Ranking {
                                 salvo = true;
                                 jarealizouTroca = false;
                             }
-                        } else { System.out.println("Não salvou");}
+                        } else {}
                     }
 
                     if (!salvo){

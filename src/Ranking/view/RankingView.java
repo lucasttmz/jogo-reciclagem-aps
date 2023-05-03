@@ -1,8 +1,9 @@
 package Ranking.view;
 
-import java.util.List;
-import java.util.Map;
+import java.awt.GridLayout;
+import java.util.*;
 import javax.swing.*;
+import javax.xml.crypto.Data;
 
 import Ranking.presenter.RankingPresenter;
 import view.*;
@@ -19,6 +20,7 @@ public class RankingView extends JFrame implements IRankingView {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         
+
         iniciarComponentes();
         setPresenter(presenter);
 
@@ -30,8 +32,10 @@ public class RankingView extends JFrame implements IRankingView {
     @Override
     public void iniciarComponentes(){
 
+
         jPanel = new JPanel();
-        //jPanel.setBackground(getForeground().darker());
+        jPanel.setBackground(getForeground().BLUE);
+        jPanel.setLayout(new GridLayout(3, 1));
         this.add(jPanel);
 
         JLabel lblTitulo = new JLabel("Ranking");
@@ -47,17 +51,31 @@ public class RankingView extends JFrame implements IRankingView {
         this.presenter = new RankingPresenter(this);
         
     }
-
+    private String nome;
     @Override
     public void atualizarRanking(List<Map<String, Integer>> pontuacoes){
 
+        String column[] = {"Nome","Pontuação"};
         
+        List<List<Object>> listData = new ArrayList<List<Object>>();
+
         for(int i = 0; i < pontuacoes.size(); i++){
-
-            JLabel lblRanking = new JLabel(pontuacoes.get(i).toString());
-            jPanel.add(lblRanking);
+            
+            pontuacoes.get(i).forEach(((t, u) -> nome = t));
+            listData.add(Arrays.asList(nome, pontuacoes.get(i).get(nome).toString()));
         }
+        
+        String data[][] = {{"samuel","10"}, {"matheus", "20"}};
 
+        System.out.println(data);
+        
+        /*
+        JTable jt = new JTable(data, column);    
+        jt.setBounds(30,40,200,300);          
+        JScrollPane sp = new JScrollPane(jt);
+        jPanel.add(sp);    
+         */
     }
+
 
 }

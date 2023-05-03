@@ -16,7 +16,6 @@ public class RankingPresenter implements IRankingPresenter{
     @Override
     public void mostrarRanking(){
 
-        RankingClass.definirRecord();
         rankingView.atualizarRanking(RankingClass.getRecord());
 
     }

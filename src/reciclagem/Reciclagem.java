@@ -12,8 +12,7 @@ public class Reciclagem
     public static void main(String[] args)
     {
         RankingView view = new RankingView();
-        
-        
+  
     }
     
 }
