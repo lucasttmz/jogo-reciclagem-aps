@@ -3,6 +3,7 @@ package Ranking.view;
 import java.awt.GridLayout;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.table.TableModel;
 import javax.xml.crypto.Data;
 
 import Ranking.presenter.RankingPresenter;
@@ -52,29 +53,26 @@ public class RankingView extends JFrame implements IRankingView {
         
     }
     private String nome;
+    
     @Override
-    public void atualizarRanking(List<Map<String, Integer>> pontuacoes){
+    public void atualizarRanking(Object[][] pontuacoes){
 
-        String column[] = {"Nome","Pontuação"};
-        
-        List<List<Object>> listData = new ArrayList<List<Object>>();
+        Object[] column = {"Nome","Pontuação"};
 
-        for(int i = 0; i < pontuacoes.size(); i++){
-            
-            pontuacoes.get(i).forEach(((t, u) -> nome = t));
-            listData.add(Arrays.asList(nome, pontuacoes.get(i).get(nome).toString()));
+        for(int k = 0; k < pontuacoes.length; k++ ){
+            System.out.println(Arrays.toString(pontuacoes));
         }
         
-        String data[][] = {{"samuel","10"}, {"matheus", "20"}};
+        //TableModel model = new TableModel(data, column) ;
 
-        System.out.println(data);
+        //JTable jt = new JTable(pontuacoes, column);    
         
-        /*
-        JTable jt = new JTable(data, column);    
-        jt.setBounds(30,40,200,300);          
-        JScrollPane sp = new JScrollPane(jt);
-        jPanel.add(sp);    
-         */
+        //jt.setBounds(30,40,200,300);          
+        //JScrollPane sp = new JScrollPane(jt);
+
+
+        //jPanel.add(sp);    
+         
     }
 
 

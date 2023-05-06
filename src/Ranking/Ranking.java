@@ -7,7 +7,8 @@ import java.util.*;
 public class Ranking {
 
     private String caminhoTxt = "C:/Users/Samuca/Documents/GitHub/jogo-reciclagem-aps/src/resources/pontuacao.txt";
-    private List<Map<String, Integer>> pontos = new ArrayList<>();
+    private List<String[]> pontos = new ArrayList<>();
+    private String[][] pontuacoesArray;
     
     private int valorTestado;
     private int valorAdicionado;
@@ -59,13 +60,13 @@ public class Ranking {
                 boolean salvo = false; 
                 String[] linhaStrings = linha.split(",");
                 
-                Map<String, Integer> map = new HashMap<>();
-                map.put(linhaStrings[0], Integer.valueOf(linhaStrings[1]));
+                //Map<String, Integer> map = new HashMap<>();
+                //map.put(linhaStrings[0], Integer.valueOf(linhaStrings[1]));
                 
                 
                 if (contadorLinhas == 0  ){
 
-                    pontos.add(map);
+                    pontos.add(linhaStrings);
                 }
                 else{
 
@@ -73,13 +74,16 @@ public class Ranking {
                     for (int i = 0; i < tamanhoatual; i++) {
 
                         if (jarealizouTroca) {
+
+                            valorTestado = Integer.valueOf(pontos.get(i)[1]);
+                            valorAdicionado = Integer.valueOf(linhaStrings[1]); 
                                 
-                            pontos.get(i).forEach(((t, u) -> valorTestado = u));
-                            map.forEach((key, value) -> valorAdicionado = value);
+                            //pontos.get(i).forEach(((t, u) -> valorTestado = u));
+                            //map.forEach((key, value) -> valorAdicionado = value);
                                 
                             if (valorAdicionado > valorTestado) {
 
-                                List<Map<String, Integer>> tempAList = new ArrayList<>();
+                                List<String[]> tempAList = new ArrayList<>();
 
                                 //remove os valores menores e salva em uma lista temporaria
                                 for (int j = i; j < tamanhoatual; j++) {
@@ -89,7 +93,7 @@ public class Ranking {
                                 }
                                 
                                 //Adiciona o valor maior
-                                pontos.add(map);
+                                pontos.add(linhaStrings);
             
                                 //Adiciona os valores da lista temporaria na lista principal
                                 for (int g = 0; g < tempAList.size(); g++) {
@@ -105,15 +109,26 @@ public class Ranking {
                     }
 
                     if (!salvo){
-                        pontos.add(map); // Caso o número for o menos ele é add ao final de tudo
+                        pontos.add(linhaStrings); // Caso o número for o menos ele é add ao final de tudo
                     } 
                 }
 
                 linha = salvarValores.readLine();
                 contadorLinhas++;
             }
-                
-            System.out.println(pontos);
+            
+            
+            for(int k = 0; k < pontos.size(); k++ ){
+                System.out.println(Arrays.toString(pontos.get(k)));
+            }
+
+            String[][] pontuacoesArray = new String[pontos.size()][2];
+
+            for(int i = 0; i < pontos.size(); i++){
+
+                pontuacoesArray[i] = pontos.get(i);
+            }
+            
             Arquivo.close();          
         } 
         catch (Exception e) 
@@ -122,16 +137,18 @@ public class Ranking {
         }
     }
 
-    public List<Map<String, Integer>> getRecord(){
+    public Object[][] getRecord(){
         
         try {
+            
             definirRecord();
+            
+        
         } catch (Exception e) {
             System.out.println(e);
         }
-        
-        
-        return pontos;
+
+        return pontuacoesArray;
     }
 
 }

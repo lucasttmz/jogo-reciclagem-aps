@@ -11,5 +11,5 @@ public interface IRankingView
 {
     void iniciarComponentes();
     void setPresenter(RankingPresenter presenter);
-    void atualizarRanking(List<Map<String, Integer>> pontuacoes) ;
+    void atualizarRanking(Object[][] pontuacoes) ;
 }

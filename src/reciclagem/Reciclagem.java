@@ -1,5 +1,5 @@
 package reciclagem;
-
+import Ranking.Ranking;
 import Ranking.view.RankingView;
 /**
  * Classe utilizada para iniciar a aplicação
