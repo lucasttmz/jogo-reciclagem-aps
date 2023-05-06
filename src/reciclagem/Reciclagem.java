@@ -1,6 +1,9 @@
 package reciclagem;
-import Ranking.Ranking;
-import Ranking.view.RankingView;
+
+import model.Ranking;
+import view.RankingView;
+import presenter.RankingPresenter;
+
 /**
  * Classe utilizada para iniciar a aplicação
  * Podem reescrever ela para testar as suas classes
@@ -11,8 +14,9 @@ public class Reciclagem
 
     public static void main(String[] args)
     {
+        Ranking rank = new Ranking();
         RankingView view = new RankingView();
-  
+        RankingPresenter presenter = new RankingPresenter(view, rank);
     }
     
 }

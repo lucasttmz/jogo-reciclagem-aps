@@ -1,7 +1,7 @@
 package view;
 
 import java.util.*;
-import Ranking.presenter.RankingPresenter;
+import presenter.RankingPresenter;
 
 /**
  * Interface para o View do Ranking

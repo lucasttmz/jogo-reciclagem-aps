@@ -1,25 +1,34 @@
-package Ranking;
+package model;
 
 import java.io.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Ranking {
 
-    private String caminhoTxt = "C:/Users/Samuca/Documents/GitHub/jogo-reciclagem-aps/src/resources/pontuacao.txt";
+    private File arquivo;
+    private String caminhoTxt = "pontuacao.txt";
     private List<String[]> pontos = new ArrayList<>();
-    private String[][] pontuacoesArray;
     
     private int valorTestado;
     private int valorAdicionado;
     
+    public Ranking()
+    {
+        arquivo = new File(caminhoTxt);
+        if (!arquivo.exists())
+            criarArquivoPontuacoes();
+    }
+    
     public void salvarNovaPontuacao(String nome, int pontuacao) throws IOException {
-
-        FileWriter arquivo = new FileWriter(caminhoTxt, true);
-        PrintWriter gravarArquivo = new PrintWriter(arquivo);
+        FileWriter fw = new FileWriter(arquivo, true);
+        PrintWriter gravarArquivo = new PrintWriter(fw);
         gravarArquivo.printf("%s,%d%n",nome,pontuacao);
 
-        arquivo.close();
+        fw.close();
 
         System.out.println("Pontuação salva com sucesso ");
     }
@@ -28,41 +37,34 @@ public class Ranking {
         
         try
         {
-            FileWriter arquivo = new FileWriter(caminhoTxt);
-            PrintWriter writer = new PrintWriter(arquivo);
+            FileWriter fw = new FileWriter(arquivo);
+            PrintWriter writer = new PrintWriter(fw);
             writer.print("");
             writer.close(); 
         
             pontos.clear();
             System.out.println("Ranking deletado");
         } 
-        catch (Exception e)
+        catch (IOException e)
         {
-            System.out.println(e);
+            System.out.println("Resetar: " + e);
         }
     }
     
     public void definirRecord(){
-
-
         try 
         {
-            FileReader Arquivo = new FileReader(caminhoTxt);
+            FileReader Arquivo = new FileReader(arquivo);
             BufferedReader salvarValores = new BufferedReader(Arquivo);
 
             String linha = salvarValores.readLine();
-
-
+            
             int contadorLinhas = 0;
             while(linha != null){
 
                 boolean jarealizouTroca = true;
                 boolean salvo = false; 
                 String[] linhaStrings = linha.split(",");
-                
-                //Map<String, Integer> map = new HashMap<>();
-                //map.put(linhaStrings[0], Integer.valueOf(linhaStrings[1]));
-                
                 
                 if (contadorLinhas == 0  ){
 
@@ -75,8 +77,8 @@ public class Ranking {
 
                         if (jarealizouTroca) {
 
-                            valorTestado = Integer.valueOf(pontos.get(i)[1]);
-                            valorAdicionado = Integer.valueOf(linhaStrings[1]); 
+                            valorTestado = Integer.parseInt(pontos.get(i)[1]);
+                            valorAdicionado = Integer.parseInt(linhaStrings[1]); 
                                 
                             //pontos.get(i).forEach(((t, u) -> valorTestado = u));
                             //map.forEach((key, value) -> valorAdicionado = value);
@@ -101,7 +103,6 @@ public class Ranking {
                                 }
                                 tempAList.clear();
 
-                                System.out.println("Troca realizada");
                                 salvo = true;
                                 jarealizouTroca = false;
                             }
@@ -117,38 +118,50 @@ public class Ranking {
                 contadorLinhas++;
             }
             
-            
-            for(int k = 0; k < pontos.size(); k++ ){
-                System.out.println(Arrays.toString(pontos.get(k)));
-            }
-
-            String[][] pontuacoesArray = new String[pontos.size()][2];
-
-            for(int i = 0; i < pontos.size(); i++){
-
-                pontuacoesArray[i] = pontos.get(i);
-            }
-            
             Arquivo.close();          
         } 
-        catch (Exception e) 
+        catch (IOException | NumberFormatException e) 
         {
             System.out.println(e);
         }
     }
 
-    public Object[][] getRecord(){
-        
+    public int getRecord()
+    {
+        int pontuacaoMaxima = 0;
         try {
-            
             definirRecord();
-            
-        
+            pontuacaoMaxima = Integer.parseInt(pontos.get(0)[1]);
         } catch (Exception e) {
             System.out.println(e);
         }
-
-        return pontuacoesArray;
+        
+        return pontuacaoMaxima;
     }
-
+    
+    public Object[][] getPontuacoes(){
+        
+        definirRecord();
+        
+        Object[][] tabelaPontos = new Object[pontos.size()][2];
+        for(int i=0; i < tabelaPontos.length; i++)
+        {
+            tabelaPontos[i] = pontos.get(i);
+        }
+        
+        return tabelaPontos;
+    }
+    
+    private void criarArquivoPontuacoes()
+    {
+        try
+        {
+            PrintWriter pw = new PrintWriter(caminhoTxt, "UTF-8");
+            pw.print("");
+            pw.close();
+        } catch (FileNotFoundException | UnsupportedEncodingException ex)
+        {
+            System.out.println(ex);
+        }
+    }
 }
