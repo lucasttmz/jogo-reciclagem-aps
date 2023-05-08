@@ -28,6 +28,7 @@ public class RankingPresenter implements IRankingPresenter{
     public void resetarRanking()
     {
         model.resetarRanking();
+        view.atualizarRanking(model.getPontuacoes());
         System.out.println("RANKING RESETADO");
     }
     

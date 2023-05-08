@@ -2,10 +2,7 @@ package model;
 
 import java.io.*;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Ranking {
 
@@ -65,9 +62,10 @@ public class Ranking {
                 boolean jarealizouTroca = true;
                 boolean salvo = false; 
                 String[] linhaStrings = linha.split(",");
-                
+                linhaStrings[0] = linhaStrings[0].toUpperCase();
                 if (contadorLinhas == 0  ){
 
+                    
                     pontos.add(linhaStrings);
                 }
                 else{
