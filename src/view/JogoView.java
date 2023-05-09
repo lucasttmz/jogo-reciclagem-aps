@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -13,9 +12,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import model.Desenhavel;
 import presenter.*;
@@ -28,48 +28,51 @@ public class JogoView extends JFrame implements IJogoView {
   private Canvas canvas;
 
   public JogoView() {
-    this.setTitle("Recycle Hero");
+    this.setTitle("Herói da Reciclagem");
     this.setSize(400, 700);
     this.setResizable(false);
+    this.setLocationRelativeTo(null);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
   public void iniciarComponentes() {
-    JPanel jpnlPrincipal = new JPanel();
+    JPanel pnlPrincipal = new JPanel();
 
-    jpnlPrincipal.setSize(400, 700);
-    jpnlPrincipal.setLayout(new BorderLayout());
+    pnlPrincipal.setSize(400, 700);
+    pnlPrincipal.setLayout(new BorderLayout());
 
-    JPanel jpnlHeader = new JPanel();
-    jpnlHeader.setSize(400, 30);
-    jpnlHeader.setLayout(new GridLayout(1, 2));
+    JPanel pnlHeader = new JPanel();
+    pnlHeader.setSize(400, 30);
+    pnlHeader.setLayout(new GridLayout(1, 2));
+    pnlHeader.setBackground(Color.WHITE);
 
     lblPontos = new JLabel("Pontos:");
+    lblPontos.setHorizontalAlignment(SwingConstants.CENTER);
     lblRecord = new JLabel("Record:");
-    lblRecord.setBorder(new EmptyBorder(0, 100, 0, 0));
+    lblRecord.setHorizontalAlignment(SwingConstants.CENTER);
 
-    jpnlHeader.add(lblPontos);
-    jpnlHeader.add(lblRecord);
+    pnlHeader.add(lblPontos);
+    pnlHeader.add(lblRecord);
 
-    jpnlPrincipal.add(jpnlHeader, BorderLayout.NORTH);
+    pnlPrincipal.add(pnlHeader, BorderLayout.NORTH);
 
     canvas = new Canvas();
 
     canvas.setPreferredSize(new Dimension(400, 450));
     canvas.setBackground(Color.BLUE);
 
-    jpnlPrincipal.add(canvas, BorderLayout.CENTER);
+    pnlPrincipal.add(canvas, BorderLayout.CENTER);
 
-    JPanel jpnlLixeiras = new JPanel();
-    jpnlLixeiras.setLayout(new GridLayout(1, 4));
-    jpnlLixeiras.setPreferredSize(new Dimension(400, 150));
+    JPanel pnlLixeiras = new JPanel();
+    pnlLixeiras.setLayout(new GridLayout(1, 4));
+    pnlLixeiras.setPreferredSize(new Dimension(400, 150));
 
     for (int id : List.of(0, 1, 2, 3)) {
       JButton lixeira = new JButton();
       lixeira.addActionListener((e) -> presenter.selecionarLixeira(id));
       lixeira.setBackground(Color.WHITE);
       lixeiras[id] = lixeira;
-      jpnlLixeiras.add(lixeira);
+      pnlLixeiras.add(lixeira);
     }
 
     this.setFocusable(true);
@@ -83,9 +86,9 @@ public class JogoView extends JFrame implements IJogoView {
       }
     });
 
-    jpnlPrincipal.add(jpnlLixeiras, BorderLayout.SOUTH);
+    pnlPrincipal.add(pnlLixeiras, BorderLayout.SOUTH);
 
-    this.add(jpnlPrincipal);
+    this.add(pnlPrincipal);
     presenter.desenharLixeiras();
     this.setVisible(true);
 
@@ -108,17 +111,17 @@ public class JogoView extends JFrame implements IJogoView {
 
   public void selecionarLixeira(int idLixeira) {
     this.lixeiras[idLixeira].setBorder(BorderFactory.createLineBorder(
-        Color.BLACK, 3));
+        Color.GREEN, 3));
   }
 
   public void deselecionarLixeira() {
     for (JButton lixeira : lixeiras) {
-      lixeira.setBorder(null);
+      lixeira.setBorder(UIManager.getBorder("Button.border"));
     }
   }
 
   public void mudarPontuacao(int pontuacao, boolean record) {
-    lblPontos.setText("Pontos:" + pontuacao);
+    lblPontos.setText("Pontos: " + pontuacao);
 
     if (record) {
       this.lblPontos.setForeground(Color.blue);
@@ -128,9 +131,11 @@ public class JogoView extends JFrame implements IJogoView {
   }
 
   public void mudarRecord(int record) {
-    lblRecord.setText("Record:" + record);
+    lblRecord.setText("Record: " + record);
   }
 
   public void mostrarGameOver() {
+      String input = JOptionPane.showInputDialog("Digite seu nome");
+      System.out.println(input+ ": "+ lblPontos.getText());
   }
 }

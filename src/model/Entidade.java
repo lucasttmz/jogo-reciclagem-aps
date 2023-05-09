@@ -22,7 +22,7 @@ public class Entidade implements Desenhavel
         
         // Posições possiveis e tipos de entidade que irão ser escolhidos em
         // conjunto de forma aleatória depois de serem embaralhados. 
-        List<Integer> posPossiveis = Arrays.asList(20, 120, 220, 320);
+        List<Integer> posPossiveis = Arrays.asList(10, 110, 210, 310);
         List<TipoEntidade> tipos = Arrays.asList(
                 TipoEntidade.LIXO_METAL, TipoEntidade.LIXO_PLASTICO,
                 TipoEntidade.LIXO_PAPEL, TipoEntidade.LIXO_VIDRO);

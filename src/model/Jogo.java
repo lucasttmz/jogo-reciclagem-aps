@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static model.ReprodutorDeAudio.Audio;
+
 /**
  * Contém toda a lógica do Jogo.
  */
 public class Jogo implements Runnable 
 {
     private final Estado estado;
+    private ReprodutorDeAudio audio;
     private int delayMovimento;
     private int delayNovaEntidade;
     private int qtdMovimento;
@@ -21,18 +24,20 @@ public class Jogo implements Runnable
     private static final int TAMANHO_JANELA = 450;
     private static final int TAMANHO_LIXEIRAS = 100;
     
-    public Jogo(Dificuldade dificuldade)
+    public Jogo(Dificuldade dificuldade, boolean habilitarAudio)
     {
         this.estado = new Estado();
         this.ocorreuColisao = false;
         
         this.qtdMovimento = 50;
         this.msDesdeNovaEntidade = 0;
-        
         this.delayMovimento = dificuldade.getDelayMovimento();
         this.delayNovaEntidade = dificuldade.getDelayNovaEntidade();
         this.pontosAcelerarJogo = dificuldade.getPontosAcelerarJogo();
         this.pontosIncrementarReciclaveis = dificuldade.getPontosIncrementarReciclaveis();
+        
+        if (habilitarAudio)
+            audio = new ReprodutorDeAudio();
     }
     
     public void iniciarPartida()
@@ -40,6 +45,7 @@ public class Jogo implements Runnable
         if (!estado.isIniciado())
         {
             estado.configurarInicioPartida();
+            iniciarMusicaSeHabilitada();
             new Thread(this).start();
         }
     }
@@ -60,6 +66,14 @@ public class Jogo implements Runnable
                 adicionarReciclaveis(calcularQuantidadeReciclaveis());
             
             esperarDelayParaProximoMovimento();
+        }
+    }
+    
+    private void iniciarMusicaSeHabilitada()
+    {
+        if(audio != null)
+        {
+            audio.reproduzirMusica(Audio.MUSICA, true);
         }
     }
     
@@ -91,10 +105,21 @@ public class Jogo implements Runnable
         TipoEntidade lixeiraColidida = ((Entidade) estado.getLixeira(indexColisao)).getTipo();
         
         boolean reciclagemIncorreta = lixeiraColidida.getTipoCorrespondente() != lixo.getTipo();
-        if (reciclagemIncorreta && !estado.isGameOver() )
-            estado.setGameOver(true);
+        if (reciclagemIncorreta && !estado.isGameOver())
+            alertarGameOver();
         
         return true;
+    }
+    
+    private void alertarGameOver()
+    {
+        if(audio != null)
+        {
+            audio.pararReproducaoAudio();
+            audio.reproduzirMusica(Audio.GAMEOVER, false);
+        }
+        
+        estado.setGameOver(true);
     }
     
     private void incrementarPontuacao()

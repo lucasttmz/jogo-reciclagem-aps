@@ -4,6 +4,7 @@ import model.Dificuldade;
 import model.Jogo;
 import presenter.JogoPresenter;
 import view.JogoView;
+import view.MenuView;
 
 /**
  * Classe utilizada para iniciar a aplicação
@@ -13,10 +14,13 @@ import view.JogoView;
 
 public class Reciclagem {
 
-    public static void main(String[] args) {
-        Jogo jogo = new Jogo(Dificuldade.MEDIO);
-        JogoView jogoView = new JogoView();
-        JogoPresenter jogoPresenter = new JogoPresenter(jogoView, jogo);
+    public static void main(String[] args) 
+    {
+//        Jogo jogo = new Jogo(Dificuldade.MEDIO, true);
+//        JogoView jogoView = new JogoView();
+//        JogoPresenter jogoPresenter = new JogoPresenter(jogoView, jogo);
+
+        MenuView view = new MenuView();
 
     }
 
