@@ -25,12 +25,11 @@ public enum TipoEntidade
         this.imagem = imagem;
     }
     
-    public TipoEntidade getEntidadeCorrespondente()
+    public TipoEntidade getTipoCorrespondente()
     {
-        if(this.id < 4)
-            return TipoEntidade.values()[id+4];
+        int index = id < 4 ? id+4 : id-4;
         
-        return TipoEntidade.values()[id-4];
+        return TipoEntidade.values()[index];
     }
     
     public ImageIcon getImagem()
