@@ -1,4 +1,3 @@
-
 # Eco Hero - APS 3º Semestre
 
 Este é um repositório criado para a Atividade Prática Supervisionada (APS) do terceiro semestre do curso de Ciência da Computação da UNIP. O objetivo da APS era desenvolver um jogo educativo sobre o tema de reciclagem.
