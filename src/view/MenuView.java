@@ -19,10 +19,13 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer.UIResource;
 
 import presenter.IMenuPresenter;
 
+/**
+ * Formulário do Menu Principal.
+ */
 public class MenuView extends JFrame implements IMenuView {
 
     private IMenuPresenter presenter;
-    
+
     private JPanel pnlPrincipal;
     private JCheckBox cbMusica;
     private JComboBox cmbDificuldade;
@@ -42,7 +45,7 @@ public class MenuView extends JFrame implements IMenuView {
         //Define o icon
         ImageIcon icon = new ImageIcon(getClass().getResource("/resources/icon.png"));
         setIconImage(icon.getImage());
-        
+
         // Titulo
         JLabel lblTitulo = new JLabel("Eco Hero");
         lblTitulo.setIcon(icon);
@@ -51,7 +54,7 @@ public class MenuView extends JFrame implements IMenuView {
         lblTitulo.setHorizontalTextPosition(SwingConstants.CENTER);
         lblTitulo.setVerticalTextPosition(SwingConstants.BOTTOM);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 30));
-        
+
         // Botao Iniciar Jogo
         JButton btnIniciarJogo = new JButton("Iniciar Jogo");
         btnIniciarJogo.setPreferredSize(new Dimension(300, 50));
@@ -63,7 +66,7 @@ public class MenuView extends JFrame implements IMenuView {
             presenter.iniciarPartida();
         });
         btnIniciarJogo.addMouseListener(new EfeitoHover());
-        
+
         // Botao Ranking de Pontuações
         JButton btnRanking = new JButton("Ranking de Pontuações");
         btnRanking.setPreferredSize(new Dimension(300, 50));
@@ -75,13 +78,13 @@ public class MenuView extends JFrame implements IMenuView {
             presenter.mostrarRanking();
         });
         btnRanking.addMouseListener(new EfeitoHover());
-        
+
         // Label Dificuldades
         JLabel lblDificuldade = new JLabel("Selecione a dificuldade");
         lblDificuldade.setFont(new Font("Arial", Font.BOLD, 14));
         lblDificuldade.setForeground(new Color(0, 77, 0));
         lblDificuldade.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         // ComboBox Dificuldades
         String[] dificuldades = {"Fácil", "Médio", "Difícil"};
         cmbDificuldade = new JComboBox(dificuldades);
@@ -96,7 +99,7 @@ public class MenuView extends JFrame implements IMenuView {
         cmbDificuldade.addItemListener((e) -> {
             presenter.atualizarDificuldade(cmbDificuldade.getSelectedIndex());
         });
-        
+
         // Checkbox Musica
         cbMusica = new JCheckBox("Habilitar Música");
         cbMusica.setHorizontalAlignment(SwingConstants.CENTER);
@@ -107,18 +110,18 @@ public class MenuView extends JFrame implements IMenuView {
         cbMusica.addItemListener((e) -> {
             presenter.habilitarMusica(cbMusica.isSelected());
         });
-        
+
         // Layout
         layout = new GridBagLayout();
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 0, 15, 0);
         gbc.fill = GridBagConstraints.BOTH;
-        
+
         pnlPrincipal = new JPanel();
         pnlPrincipal.setBackground(new Color(244, 250, 242));
         pnlPrincipal.setPreferredSize(new Dimension(400, 450));
         pnlPrincipal.setLayout(layout);
-        
+
         posicionarComponente(lblTitulo, 0, 2, 5, 1);
         posicionarComponente(btnIniciarJogo, 1, 1, 6, 1);
         gbc.insets = new Insets(3, 0, 3, 0);
@@ -128,7 +131,7 @@ public class MenuView extends JFrame implements IMenuView {
         posicionarComponente(cbMusica, 4, 1, 6, 1);
         gbc.insets = new Insets(15, 0, 15, 0);
         posicionarComponente(btnRanking, 5, 1, 6, 1);
-        
+
         this.add(pnlPrincipal);
         this.setVisible(true);
     }
@@ -137,16 +140,14 @@ public class MenuView extends JFrame implements IMenuView {
     public void setPresenter(IMenuPresenter presenter) {
         this.presenter = presenter;
     }
-    
+
     @Override
-    public void fechar()
-    {
+    public void fechar() {
         this.presenter = null;
         this.dispose();
     }
- 
-    private void posicionarComponente(Component c, int linha, int coluna, int largura, int altura)
-    {
+
+    private void posicionarComponente(Component c, int linha, int coluna, int largura, int altura) {
         gbc.gridy = linha;
         gbc.gridx = coluna;
         gbc.gridheight = altura;
@@ -154,5 +155,5 @@ public class MenuView extends JFrame implements IMenuView {
         layout.setConstraints(c, gbc);
         pnlPrincipal.add(c);
     }
-    
+
 }

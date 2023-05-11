@@ -7,8 +7,8 @@ import java.util.Optional;
 /**
  * Armazena os dados referentes ao estado atual do jogo.
  */
-public class Estado 
-{
+public class Estado {
+
     private boolean iniciado;
     private boolean gameOver;
     private int recordAtual;
@@ -17,9 +17,8 @@ public class Estado
     private List<Desenhavel> reciclaveis;
     private List<Desenhavel> lixeiras;
     private final List<EstadoObserver> observadores;
-    
-    public Estado()
-    {
+
+    public Estado() {
         iniciado = false;
         gameOver = false;
         reciclaveis = List.of(); // Lista imutável
@@ -27,129 +26,104 @@ public class Estado
         lixeiras = Entidade.getLixeiras();
         idLixeiraSelecionada = Optional.empty();
     }
-    
-    public void registrarObserver(EstadoObserver observador)
-    {
+
+    public void registrarObserver(EstadoObserver observador) {
         this.observadores.add(observador);
     }
-    
-    public void configurarInicioPartida()
-    {
+
+    public void configurarInicioPartida() {
         setIniciado(true);
         setPontos(0);
         setRecordAtual(new Ranking().getRecord());
     }
-    
-    public Optional<Integer> getIdLixeiraSelecionada()
-    {
+
+    public Optional<Integer> getIdLixeiraSelecionada() {
         return idLixeiraSelecionada;
     }
 
-    public void setIdLixeiraSelecionada(Optional<Integer> idLixeiraSelecionada)
-    {
+    public void setIdLixeiraSelecionada(Optional<Integer> idLixeiraSelecionada) {
         this.idLixeiraSelecionada = idLixeiraSelecionada;
     }
-    
-    public void setPontos(int pontos)
-    {
+
+    public void setPontos(int pontos) {
         this.pontos = pontos;
-        
-        for (EstadoObserver obs : observadores)
-        {
+
+        for (EstadoObserver obs : observadores) {
             obs.noIncrementoPontuacao(pontos, isRecord());
         }
     }
-    
-    public void incrementarPontos()
-    {
+
+    public void incrementarPontos() {
         setPontos(this.pontos + 1);
     }
-    
-    public int getPontos()
-    {
+
+    public int getPontos() {
         return pontos;
     }
-    
-    public void setRecordAtual(int recordAtual)
-    {
+
+    public void setRecordAtual(int recordAtual) {
         this.recordAtual = recordAtual;
-        
-        for (EstadoObserver obs : observadores)
-        {
+
+        for (EstadoObserver obs : observadores) {
             obs.noNovoRecord(recordAtual);
         }
     }
-    
-    public int getRecordAtual()
-    {
+
+    public int getRecordAtual() {
         return recordAtual;
     }
-    
-    public boolean isRecord()
-    {
+
+    public boolean isRecord() {
         return getPontos() > getRecordAtual();
     }
 
-    public void setIniciado(boolean iniciado)
-    {
+    public void setIniciado(boolean iniciado) {
         this.iniciado = iniciado;
     }
-    
-    public boolean isIniciado()
-    {
+
+    public boolean isIniciado() {
         return iniciado;
     }
 
-    public void pararPartida()
-    {
+    public void pararPartida() {
         this.gameOver = true;
     }
-    
-    public void setGameOver(boolean gameOver)
-    {
+
+    public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
-        
-        if (gameOver)
-        {
-            for (EstadoObserver obs : observadores)
-            {
+
+        if (gameOver) {
+            for (EstadoObserver obs : observadores) {
                 obs.noGameOver();
             }
         }
     }
-    
-    public boolean isGameOver()
-    {
+
+    public boolean isGameOver() {
         return gameOver;
     }
-    
-    public List<Desenhavel> getReciclaveis()
-    {
+
+    public List<Desenhavel> getReciclaveis() {
         return List.copyOf(reciclaveis);
     }
 
-    public void setReciclaveis(List<Desenhavel> reciclaveis)
-    {
+    public void setReciclaveis(List<Desenhavel> reciclaveis) {
         this.reciclaveis = reciclaveis;
-        for (EstadoObserver obs : observadores)
-        {
+        for (EstadoObserver obs : observadores) {
             obs.noMovimentoReciclaveis(this.reciclaveis);
         }
     }
 
-    public Desenhavel getLixeira(int index)
-    {
+    public Desenhavel getLixeira(int index) {
         return lixeiras.get(index);
     }
-    
-    public List<Desenhavel> getLixeiras()
-    {
+
+    public List<Desenhavel> getLixeiras() {
         return lixeiras;
     }
 
-    public void setLixeiras(List<Desenhavel> lixeiras)
-    {
+    public void setLixeiras(List<Desenhavel> lixeiras) {
         this.lixeiras = lixeiras;
     }
-   
+
 }

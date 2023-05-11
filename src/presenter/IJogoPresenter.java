@@ -4,11 +4,10 @@ import java.util.List;
 import model.Desenhavel;
 
 /**
- * Interface para o Presenter do Jogo
- * Declara todos os métodos públicos do Jogo Presenter.
+ * Interface para o Presenter do Jogo Declara todos os métodos públicos do JogoPresenter.
  */
-public interface IJogoPresenter
-{
+public interface IJogoPresenter {
+
     void iniciar();
     void selecionarLixeira(int idLixeira);
     void desenharLixeiras();

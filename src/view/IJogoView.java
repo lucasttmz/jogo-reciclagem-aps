@@ -5,11 +5,11 @@ import model.Desenhavel;
 import presenter.IJogoPresenter;
 
 /**
- * Interface para o View do Jogo
+ * Interface para o View do Jogo 
  * Declara todos os métodos públicos do Jogo View.
  */
-public interface IJogoView
-{
+public interface IJogoView {
+
     void iniciarComponentes();
     void setPresenter(IJogoPresenter presenter);
     void desenharLixeiras(List<Desenhavel> lixeiras);

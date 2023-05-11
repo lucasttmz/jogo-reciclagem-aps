@@ -8,7 +8,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import model.Desenhavel;
 
+/**
+ * Canvas onde todas os lixos recicláveis (Entidades) do jogo são desenhados.
+ */
 class Canvas extends JPanel {
+
     private List<Desenhavel> desenhaveis;
 
     // Imagem de fundo do canvas
