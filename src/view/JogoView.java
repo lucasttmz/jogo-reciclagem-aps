@@ -7,12 +7,14 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -28,14 +30,24 @@ public class JogoView extends JFrame implements IJogoView {
   private Canvas canvas;
 
   public JogoView() {
+    
     this.setTitle("Herói da Reciclagem");
     this.setSize(400, 700);
     this.setResizable(false);
     this.setLocationRelativeTo(null);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
   }
 
   public void iniciarComponentes() {
+    //Define o icon
+    setIconImage(new ImageIcon(getClass().getResource("/resources/icon.png")).getImage());
+      
+    this.addWindowListener(new WindowAdapter(){
+        @Override
+        public void windowClosing(WindowEvent e) {
+            presenter.voltarAoMenuInicial();
+        }
+    });
     JPanel pnlPrincipal = new JPanel();
 
     pnlPrincipal.setSize(400, 700);
@@ -94,32 +106,38 @@ public class JogoView extends JFrame implements IJogoView {
 
   }
 
+  @Override
   public void setPresenter(IJogoPresenter presenter) {
     this.presenter = presenter;
   }
 
+  @Override
   public void desenharLixeiras(List<Desenhavel> lixeiras) {
     for (int i = 0; i < lixeiras.size(); i++) {
       this.lixeiras[i].setIcon(lixeiras.get(i).getImagem());
     }
   }
 
+  @Override
   public void desenharReciclaveis(List<Desenhavel> reciclaveis) {
     canvas.setDesenhaveis(reciclaveis);
     canvas.repaint();
   }
 
+  @Override
   public void selecionarLixeira(int idLixeira) {
     this.lixeiras[idLixeira].setBorder(BorderFactory.createLineBorder(
         Color.GREEN, 3));
   }
 
+  @Override
   public void deselecionarLixeira() {
     for (JButton lixeira : lixeiras) {
       lixeira.setBorder(UIManager.getBorder("Button.border"));
     }
   }
 
+  @Override
   public void mudarPontuacao(int pontuacao, boolean record) {
     lblPontos.setText("Pontos: " + pontuacao);
 
@@ -130,12 +148,15 @@ public class JogoView extends JFrame implements IJogoView {
     }
   }
 
+  @Override
   public void mudarRecord(int record) {
     lblRecord.setText("Record: " + record);
   }
 
-  public void mostrarGameOver() {
-      String input = JOptionPane.showInputDialog("Digite seu nome");
-      System.out.println(input+ ": "+ lblPontos.getText());
+  @Override
+  public void fechar()
+  {
+      this.presenter = null;
+      this.dispose();
   }
 }

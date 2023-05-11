@@ -18,5 +18,5 @@ public interface IJogoView
     void deselecionarLixeira();
     void mudarPontuacao(int pontuacao, boolean record);
     void mudarRecord(int record);
-    void mostrarGameOver();
+    void fechar();
 }

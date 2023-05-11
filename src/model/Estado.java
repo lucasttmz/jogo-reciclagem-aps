@@ -37,10 +37,7 @@ public class Estado
     {
         setIniciado(true);
         setPontos(0);
-        setRecordAtual(10);
-        
-        // Quando a classe record estiver pronta.
-        // setRecordAtual(new Record().getRecord());
+        setRecordAtual(new Ranking().getRecord());
     }
     
     public Optional<Integer> getIdLixeiraSelecionada()
@@ -103,6 +100,11 @@ public class Estado
         return iniciado;
     }
 
+    public void pararPartida()
+    {
+        this.gameOver = true;
+    }
+    
     public void setGameOver(boolean gameOver)
     {
         this.gameOver = gameOver;

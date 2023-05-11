@@ -16,4 +16,5 @@ public interface IJogoPresenter
     void mudarPontos(int pontos, boolean record);
     void mudarRecord(int record);
     void mostrarGameOver();
+    void voltarAoMenuInicial();
 }

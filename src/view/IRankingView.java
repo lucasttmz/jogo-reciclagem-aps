@@ -1,7 +1,6 @@
 package view;
 
-import java.util.*;
-import presenter.RankingPresenter;
+import presenter.IRankingPresenter;
 
 /**
  * Interface para o View do Ranking
@@ -10,6 +9,6 @@ import presenter.RankingPresenter;
 public interface IRankingView 
 {
     void iniciarComponentes();
-    void setPresenter(RankingPresenter presenter);
+    void setPresenter(IRankingPresenter presenter);
     void atualizarRanking(Object[][] pontuacoes) ;
 }

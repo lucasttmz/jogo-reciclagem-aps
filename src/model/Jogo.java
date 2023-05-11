@@ -1,8 +1,11 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static model.ReprodutorDeAudio.Audio;
 
@@ -207,6 +210,23 @@ public class Jogo implements Runnable
         estado.setIdLixeiraSelecionada(Optional.empty());
         
         return lixeiras;
+    }
+    
+    public void salvarPontuacao(String nomeJogador)
+    {
+        try
+        {
+            new Ranking().salvarNovaPontuacao(nomeJogador, estado.getPontos());
+        } catch (IOException ex)
+        {
+            System.out.println("Erro ao salvar pontuação: "+ ex);
+        }
+    }
+    
+    public void interromperPartida()
+    {
+        audio.pararReproducaoAudio();
+        estado.pararPartida();
     }
     
 }

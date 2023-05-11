@@ -1,10 +1,12 @@
 package presenter;
 
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.Desenhavel;
 import model.EstadoObserver;
 import model.Jogo;
 import view.IJogoView;
+import view.MenuView;
 
 public class JogoPresenter implements IJogoPresenter, EstadoObserver
 {
@@ -72,10 +74,21 @@ public class JogoPresenter implements IJogoPresenter, EstadoObserver
     @Override
     public void mostrarGameOver()
     {
-        view.mostrarGameOver();
+        String nome = JOptionPane.showInputDialog(
+                null, "Digite seu nome", "Salvar Pontuação", JOptionPane.QUESTION_MESSAGE);
+        if (nome != null)
+            jogo.salvarPontuacao(nome);
         
-        // Voltar ao menu principal / Mostrar pontuacao / etc
-        // Fazer quando a parte dos records ficar pronta
+        voltarAoMenuInicial();
+    }
+    
+    @Override
+    public void voltarAoMenuInicial()
+    {
+        this.jogo.interromperPartida();
+        this.view.fechar();
+        MenuView menuView = new MenuView();
+        MenuPresenter menuPresenter = new MenuPresenter(menuView);
     }
 
     // Métodos do Observador

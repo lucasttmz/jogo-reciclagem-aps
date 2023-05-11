@@ -7,6 +7,7 @@ package presenter;
 public interface IMenuPresenter
 {
     void iniciarPartida();
+    void mostrarRanking();
     void atualizarDificuldade(int index);
     void habilitarMusica(boolean habilitar);
 }

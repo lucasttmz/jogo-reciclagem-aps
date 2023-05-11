@@ -10,4 +10,6 @@ public interface IMenuView
 {
     void iniciarComponentes();
     void setPresenter(IMenuPresenter presenter);
+    void setVisible(boolean mostrar);
+    void fechar();
 }

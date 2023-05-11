@@ -5,13 +5,11 @@ import view.RankingView;
 
 public class RankingPresenter implements IRankingPresenter{
 
-    private Ranking model;
     private RankingView view;
     
-    public RankingPresenter(RankingView view, Ranking model)
+    public RankingPresenter(RankingView view)
     {
         this.view = view;
-        this.model = model;
         
         this.view.setPresenter(this);
         this.view.iniciarComponentes();
@@ -21,15 +19,16 @@ public class RankingPresenter implements IRankingPresenter{
     @Override
     public void mostrarRanking()
     {
-        view.atualizarRanking(model.getPontuacoes());
+        Ranking rank = new Ranking();
+        view.atualizarRanking(rank.getPontuacoes());
     }
 
     @Override
     public void resetarRanking()
     {
-        model.resetarRanking();
-        view.atualizarRanking(model.getPontuacoes());
-        System.out.println("RANKING RESETADO");
+        Ranking rank = new Ranking();
+        rank.resetarRanking();
+        view.atualizarRanking(rank.getPontuacoes());
     }
     
 }
