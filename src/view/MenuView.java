@@ -33,7 +33,7 @@ public class MenuView extends JFrame implements IMenuView {
     private GridBagLayout layout;
 
     public MenuView() {
-        this.setTitle("Eco Hero");
+        this.setTitle("Menu Principal");
         this.setSize(400, 450);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);

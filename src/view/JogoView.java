@@ -35,7 +35,7 @@ public class JogoView extends JFrame implements IJogoView {
 
     public JogoView() {
 
-        this.setTitle("Herói da Reciclagem");
+        this.setTitle("Eco Hero");
         this.setSize(400, 700);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
